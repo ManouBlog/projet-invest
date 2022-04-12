@@ -3,15 +3,89 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico"> -->
+    <!-- <title><%= htmlWebpackPlugin.options.title %></title> -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/invest.jpg">
+    <title>Invest</title>
+    <!-- This page CSS -->
+    <link href="/dist/css/pages/inbox.css" rel="stylesheet">
+    <link href="/dist/css/pages/login-register-lock.css" rel="stylesheet">
+
+    <link href="/assets/node_modules/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/node_modules/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/node_modules/switchery/dist/switchery.min.css" rel="stylesheet" />
+    <link href="/assets/node_modules/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="/assets/node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link href="/assets/node_modules/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+    <link href="/assets/node_modules/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
+    
+
+
+    <link href="../assets/node_modules/morrisjs/morris.css" rel="stylesheet">
+    <!--Toaster Popup message CSS -->
+    <link href="../assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="dist/css/style.min.css" rel="stylesheet">
+    <!-- Dashboard 1 Page CSS -->
+    <link href="dist/css/pages/dashboard1.css" rel="stylesheet">
+    <link href="/assets/node_modules/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
+    <!-- chartist CSS -->
+    <link href="/dist/css/pages/contact-app-page.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CRoboto:400,700" rel="stylesheet">
+    <link href="/dist/css/pages/footable-page.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/node_modules/html5-editor/bootstrap-wysihtml5.css" />
+    <link href="/assets/node_modules/dropzone-master/dist/dropzone.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/node_modules/calendar/dist/fullcalendar.css" rel="stylesheet" />
+    <link href="/dist/css/pages/chat-app-page.css" rel="stylesheet">
+    <link href="/assets/node_modules/morrisjs/morris.css" rel="stylesheet">
+    <!--Toaster Popup message CSS -->
+    <link href="/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/dist/css/style.min.css" rel="stylesheet">
+    <!-- Dashboard 1 Page CSS -->
+    <link href="/dist/css/pages/dashboard1.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" integrity="sha384-ejwKkLla8gPP8t2u0eQyL0Q/4ItcnyveF505U0NIobD/SMsNyXrLti6CWaD0L52l" crossorigin="anonymous">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
   </head>
-  <body>
+  <body class="skin-default fixed-layout">
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script src="/assets/node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="/dist/js/perfect-scrollbar.jquery.min.js"></script>
+    <!--Wave Effects -->
+    <script src="/dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="/dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="/dist/js/custom.min.js"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugins -->
+    <!-- ============================================================== -->
+    <!--morris JavaScript -->
+    <script src="/assets/node_modules/raphael/raphael-min.js"></script>
+    <script src="/assets/node_modules/morrisjs/morris.min.js"></script>
+    <script src="/assets/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <!-- Popup message jquery -->
+    <script src="/assets/node_modules/toast-master/js/jquery.toast.js"></script>
+    <!-- Chart JS -->
+    <script src="/dist/js/dashboard1.js"></script>
+    <script src="/assets/node_modules/toast-master/js/jquery.toast.js"></script>
+    <!-- <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script> -->
+    <script src="sweetalert2.all.min.js"></script>
   </body>
 </html>

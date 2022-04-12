@@ -1,10 +1,31 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div>
+ <router-view />
   </div>
-  <router-view/>
+
 </template>
+
+<script>
+
+// import Dashboard from '@/components/dashboard/dashboard.vue'
+// import Header from '@/components/header'
+// import Menu from '@/components/menu'
+// import Footer from '@/components/footer'
+export default {
+  name:"App",
+  components:{
+ 
+  },
+  data(){
+    return{
+    }
+  },
+   methods: {
+ 
+ }
+
+}
+</script>
 
 <style>
 #app {
@@ -27,4 +48,6 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+
 </style>
