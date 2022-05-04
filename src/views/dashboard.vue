@@ -4,7 +4,7 @@
   <Menu></Menu>
  <Footer class="my_footer"></Footer>
 </template>
-<script>
+<script>                        
 import 'boxicons'
 import Accueil from '@/components/accueil.vue'
 import Header from '@/components/header'
@@ -18,16 +18,19 @@ export default {
         }
     },
     components:{
-        Header,Menu,Footer,Accueil
+        Header,Menu,Footer,Accueil,
     },
+    methods:{
+       
+    }
    
 }
 </script>
 <style scoped>
 .my_footer{
-position:relative;
+position:absolute;
 width:100%;
-bottom:-23em;
+bottom:-8em;
 margin-left: 0 !important;
 }
 </style>

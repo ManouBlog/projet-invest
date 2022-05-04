@@ -12,7 +12,7 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span>Liste des rapports de ventes</span></li>
+              <li class="fw-bold h3"><span>Journal des ventes</span></li>
             </ol>
           </div>
         </div>
@@ -25,11 +25,12 @@
           <table id="MyTableData" class="table">
             <thead>
               <tr>
-              <th class="bg-light">Numéro</th>
-                <th class="bg-light">Date</th>
-                <th class="bg-light">Nombre de produits vendus</th>
-                <th class="bg-light">Cout total</th>
-                <th class="bg-light text-right">Actions</th>
+              <th class="bg-light">#</th>
+                <th class="bg-light">Date d'enregistrement</th>
+                <th class="bg-light">Nom de l'article</th>
+                <th class="bg-light">Nombre de pièces vendus</th>
+                <th class="bg-light">Chiffre réalisés</th>
+                <!-- <th class="bg-light text-right">Détails</th> -->
               </tr>
             </thead>
             <tbody>
@@ -37,8 +38,12 @@
                 <td>
                   {{index+1}}
                 </td>
+               
                 <td>
                   {{ new Date(item.created_at).toLocaleDateString('fr')}}
+                </td>
+                 <td>
+                  {{item.package.libelle}}
                 </td>
                 <td>
                   {{ item.nb_ventes}}
@@ -46,16 +51,13 @@
                 <td>
                   {{ moneyFormat.format(item.cout_total) }} Fcfa
                 </td>
-                <td class="text-right">
+                <!-- <td class="text-right">
                   <div class="dropdown dropdown-action d-flex justify-content-center flex-wrap">
-                    <router-link :to="{name:'detailsVentes',params:{id:item.id}}" title="Modifier l' utilisateur"  class="btn m-1 bg-pen text-light">
+                    <router-link  :to="{name:'detailsVentes',params:{id:item.id}}" data-title="détail vente"  class="btn m-1 boutons bg-pen text-light">
                        <i class="bi bi-eye"></i>
                     </router-link>
-                    <button title="Supprimer l' utilisateur" class="btn btn-lg m-1 bg-danger text-light">
-                      <i class="bi bi-trash3-fill"></i>
-                    </button>
                   </div>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>
@@ -63,7 +65,6 @@
       </div>
     </div>
     
-
 
     </div>
     <Footer class="my_footer"></Footer>
@@ -76,6 +77,7 @@ import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import { lien } from "/src/assets/api.js";
 import $ from "jquery";
+// import Swal from "sweetalert2";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import axios from "axios";
@@ -87,13 +89,16 @@ export default {
    data() {
        return {
              listVentes:null,
-             moneyFormat : new Intl.NumberFormat("de-DE")
+             moneyFormat : new Intl.NumberFormat("de-DE"),
+             showMsg:false,
+            id_delete:null,
+            isLoading:false,
        }
    },
    created() {
     this.isLoading = true;
     axios
-      .get( lien+"ventes")
+      .get(lien+"/api/ventes")
       .then((res) => {
         console.log("LISTESVENTES", res);
         this.listVentes = res.data.data;
@@ -134,9 +139,21 @@ export default {
         }, 10);
       });
   },
+  methods: {
+    
+  },
 }
 </script>
 <style scoped>
+a:hover::after{
+content:attr(data-title);
+position:absolute;
+top:30px;
+left:0;
+background: #000;
+font-size:.6em;
+padding:.5em 1em !important;
+}
 .my_footer{
 position:relative;
 width:100%;
@@ -146,12 +163,12 @@ margin-left: 0 !important;
 
 .bg-pen{
 background: rgb(231, 202, 15) !important;
-border:3px solid black !important;
+border:1px solid black !important;
 
 }
 .bg-danger{
 background: crimson !important;
-border:3px solid black !important;
+border:1px solid black !important;
 
 }
 .table{
@@ -160,5 +177,32 @@ border:thin solid rgba(139, 139, 139, 0.63) !important;
 th,td{
  border:thin solid rgba(141, 140, 140, 0.692) !important;
 }
+.delete_personne{
+position:fixed;
+width:100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.099);
+top:0;
+left:0;
+display: flex;
+place-items: center;
+justify-content: center;
+}
+.delete{
+padding:3em;
+display: flex;
+flex-direction:column;
+background: white;
+border-radius:10px ;
+box-shadow:1px 1px 10px rgba(0, 0, 0, 0.285);
+}
+.boutons{
+width:25px !important;
+height:25px !important;
+display: flex;
+place-items: center;
+justify-content: center;
+}
+
 
 </style>

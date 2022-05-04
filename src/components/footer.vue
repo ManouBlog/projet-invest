@@ -1,7 +1,7 @@
 <template>
     <div>
      <footer class="footer">
-            © 2022 La LOCOMOTIVE.lce
+            © 2022 INVEST@CI
         </footer>
     </div>
 </template>

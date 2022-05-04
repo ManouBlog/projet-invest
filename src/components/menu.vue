@@ -119,27 +119,28 @@
     ></box-icon>
     <!-- <i class="bi bi-list"></i> -->
     <aside class="left-sidebar" id="sidebar_menu">
-      <img src="/assets/images/invest.jpg" alt="homepage" class="w-75 img" />
+   <router-link :to="{name:'Dashboard'}"><img src="/assets/images/invest.jpg" alt="homepage" class="w-75 img" /></router-link>
+      
       <!-- Sidebar scroll-->
       <div class="scroll-sidebar">
         <!-- User Profile-->
         <div class="user-profile">
           <div class="user-pro-body">
-             <div class="profile img-circle">
+            <div class="profile img-circle">
               <!-- <i class="bi bi-person-circle img-person-circle"></i> -->
-              <span v-if="user">{{char}}</span>
-            </div> 
+              <span v-if="user !== null">{{ char }}</span>
+            </div>
 
             <div class="dropdown">
               <a
-                v-if="user"
+                v-if="user !== null"
                 href="javascript:void(0)"
                 class="dropdown-toggle u-dropdown link hide-menu"
                 data-bs-toggle="dropdown"
                 role="button"
                 aria-haspopup="true"
                 aria-expanded="false"
-                >{{ user.nom }}
+                >{{ this.user.nom }}
                 <span class="caret"></span>
               </a>
               <div class="dropdown-menu animated flipInY">
@@ -151,20 +152,19 @@
                 >
                   <box-icon type="solid" name="face"></box-icon> Profil
                 </a>
-                <!-- text-->
-                <!-- <a href="javascript:void(0)" class="dropdown-item">
-                                    <i class="ti-wallet"></i> My Balance</a> -->
-                <!-- text-->
-                <!-- <a href="javascript:void(0)" class="dropdown-item">
-                                    <i class="ti-email"></i> Inbox</a> -->
-                <!-- text-->
-                <div class="dropdown-divider"></div>
-                <!-- text-->
-                <!-- <a href="javascript:void(0)" class="dropdown-item">
-                                    <i class="ti-settings"></i> Account Setting</a> -->
-                <!-- text-->
-                <div class="dropdown-divider"></div>
-                <!-- text-->
+                <router-link :to="{name:'operations', params:{id:user.id}}"
+                  class="dropdown-item profil"
+                  v-if="showcreatedPackage"
+                >
+                  <box-icon type="solid" name="face"></box-icon> Mes operations
+                </router-link>
+                <router-link to="/solde"
+                  class="dropdown-item profil"
+                  v-if="showcreatedPackage"
+                >
+                  <box-icon type="solid" name="face"></box-icon>Solde
+                </router-link>
+                      
                 <a
                   href="pages-login.html"
                   class="dropdown-item profil"
@@ -173,7 +173,7 @@
                   <box-icon name="log-out" animation="tada"></box-icon>
                   Déconnexion</a
                 >
-                <!-- text-->
+               
               </div>
             </div>
           </div>
@@ -186,27 +186,28 @@
                 <i class="bi bi-person-rolodex"></i>
                 <span class="hide-menu text-dark h4"> Accueil </span>
               </router-link>
-            </li>                          
+            </li>
             <li class="my-4">
-              <a href="javascript:void(0)" @click="showPackages">
+              <a href="javascript:void(0)" @click="showPackages" v-if="showPanel">
                 <i class="bi bi-box-seam"></i>
-                <span class="hide-menu h4">Types de Packages</span>
+                <span class="hide-menu h4">Packages</span>
                 <i
                   class="bi bi-chevron-down position-absolute"
                   id="arrow-bas"
                 ></i>
               </a>
               <ul v-show="sub_packages">
-                <li>
+                <li v-if="showPanel">
                   <router-link class="px-0 a" to="/seepackage"
-                    >Voir Types de Package</router-link
+                    >Voir les packages</router-link
                   >
                 </li>
-                 <li>
+                <li v-if="showPanel">
                   <router-link class="px-0 a" to="/types-packages-utilise"
-                    >Les types Packages les plus utilisés</router-link
+                    >Les packages(quantités) </router-link
                   >
                 </li>
+                
               </ul>
             </li>
             <li class="my-3">
@@ -216,21 +217,47 @@
                 @click="show_packagess"
               >
                 <i class="bi bi-box"></i>
-                <span class="hide-menu h4">Packages </span>
+                <span class="hide-menu h4">Articles</span>
                 <i
                   class="bi bi-chevron-down position-absolute"
                   id="arrow_bas_three"
                 ></i>
               </a>
               <ul v-show="sub_packagess">
-                <li>
+                <li v-if="showcreatedPackage">
                   <router-link class="px-0 a" to="/package"
-                    >créer un Package</router-link
+                    >
+                    Créer un article</router-link
                   >
                 </li>
-                <li>
-                  <router-link class="px-0 a" to="/voirpackages"
-                    >Voir les packages</router-link
+                <li v-if="showcreatedPackage">
+                  <router-link class="px-0 a" to="/voirMesPackage"
+                    >Voir mes articles</router-link
+                  >
+                </li>
+                <li v-if="showcreatedPackage">
+                  <router-link class="px-0 a" to="/packages-souscription"
+                    >Voir mes articles soucris</router-link
+                  >
+                </li>
+                <li v-if="showPanel">
+                  <router-link  class="px-0 a" to="/voirpackages"
+                    >les articles</router-link
+                  >
+                </li>
+                <li v-if="showPanel">
+                  <router-link  class="px-0 a" to="/voirpackagespublish"
+                    >les articles publiés</router-link
+                  >
+                </li>
+                <li v-if="showPanel">
+                  <router-link  class="px-0 a" to="/voirpackagesnotpublish"
+                    >les articles en cours de traitement</router-link
+                  >
+                </li>
+                <li v-if="showPanel">
+                  <router-link  class="px-0 a" to="/articles-rejetes"
+                    >les articles rejetés</router-link
                   >
                 </li>
               </ul>
@@ -240,6 +267,7 @@
                 class="waves-dark"
                 href="javascript:void(0)"
                 @click="show_fourni"
+                v-if="showPanel"
               >
                 <i class="bi bi-people"></i>
                 <span class="hide-menu h4">Fournisseurs</span>
@@ -249,20 +277,37 @@
                 ></i>
               </a>
               <ul v-show="sub_fournisseur">
-                <li>
+                <li v-if="showPanel">
                   <router-link class="px-0 a" to="/fournisseurs"
                     >liste des fournisseurs</router-link
                   >
                 </li>
-                <li>
-                  <router-link class="px-0 a" to="/fournisseurs"
-                    >Voir le gain des fournisseurs</router-link
+              </ul>
+            </li>
+             <li class="my-3">
+              <a
+                class="waves-dark"
+                href="javascript:void(0)"
+                @click="show_invest"
+                v-if="showPanel"
+              >
+                <i class="bi bi-people"></i>
+                <span class="hide-menu h4">Investisseurs</span>
+                <i
+                  class="bi bi-chevron-down position-absolute"
+                  id="arrow_bas_invest"
+                ></i>
+              </a>
+              <ul v-show="sub_invest">
+                <li v-if="showPanel">
+                  <router-link class="px-0 a" to="/investisseurs"
+                    >liste des investisseurs</router-link
                   >
                 </li>
-              </ul>                                  
+              </ul>
             </li>
             <li class="my-4">
-              <a href="javascript:void(0)" @click="showUser">
+              <a href="javascript:void(0)" @click="showUser" v-if="showPanel">
                 <i class="bi bi-person"></i>
                 <span class="hide-menu h4">Utilisateurs</span>
                 <i
@@ -271,12 +316,17 @@
                 ></i>
               </a>
               <ul v-show="sub_user">
-                <li>
+                <li v-if="showPanel">
                   <router-link class="px-0 a" to="/users"
                     >Créer un utilisateur</router-link
                   >
                 </li>
-                <li>
+                <!-- <li v-if="showPanel">
+                  <router-link class="px-0 a" to="/role"
+                    >Créer un role</router-link
+                  >
+                </li> -->
+                <li v-if="showPanel">
                   <router-link class="px-0 a" to="/listusers"
                     >Listes des utilisateurs</router-link
                   >
@@ -288,6 +338,7 @@
                 class="waves-dark"
                 href="javascript:void(0)"
                 @click="show_scribe"
+                v-if="showPanel"
               >
                 <i class="bi bi-filter-square"></i>
                 <span class="hide-menu h4">Souscriptions</span>
@@ -297,18 +348,15 @@
                 ></i>
               </a>
               <ul v-show="sub_scribe">
-                <li>
+                <li v-if="showPanel">
                   <router-link class="px-0 a" to="/souscription"
                     >liste des souscriptions</router-link
                   >
                 </li>
               </ul>
             </li>
-            <li class="my-3">
-              <a
-                class="waves-dark"
-                @click.prevent="show_vente"
-              >
+            <li class="my-3" v-if="showcreatedPackage">
+              <a class="waves-dark" @click="show_vente">
                 <i class="bi bi-filter-square"></i>
                 <span class="hide-menu h4">Ventes</span>
                 <i
@@ -317,7 +365,7 @@
                 ></i>
               </a>
               <ul v-show="sub_vente">
-              <li>
+                <li>
                   <router-link class="px-0 a" to="/saveRapportventes"
                     >Enregistré les rapports de ventes</router-link
                   >
@@ -329,6 +377,28 @@
                 </li>
               </ul>
             </li>
+            <li class="my-3" v-if="showPanel">
+              <a class="waves-dark" @click="show_vente">
+                <i class="bi bi-filter-square"></i>
+                <span class="hide-menu h4">Ventes</span>
+                <i
+                  class="bi bi-chevron-down position-absolute"
+                  id="arrow_bas_six"
+                ></i>
+              </a>
+              <ul v-show="sub_vente">
+                <!-- <li>
+                  <router-link class="px-0 a" to="/saveRapportventes"
+                    >Enregistré les rapports de ventes</router-link
+                  >
+                </li> -->
+                <li>
+                  <router-link class="px-0 a" to="/list-rapport-ventes"
+                    >Liste des ventes</router-link
+                  >
+                </li>
+              </ul>
+            </li>
           </ul>
         </nav>
       </div>
@@ -336,6 +406,7 @@
   </div>
 </template>
 <script>
+// import store from  '@/store'
 import Swal from "sweetalert2";
 import axios from "axios";
 import { lien } from "/src/assets/api.js";
@@ -343,31 +414,36 @@ export default {
   name: "Menu",
   data() {
     return {
-      sub_vente:false,
+      sub_vente: false,
       sub_scribe: false,
       sub_fournisseur: false,
       sub_packages: false,
       sub_user: false,
+      sub_invest:false,
       user:this.$store.state.user,
-      userCompte:{
+      userCompte: {
         nom: null,
         prenoms: null,
         email: null,
         phone: null,
         lieu_habitation: null,
-        pass:null,
+        pass: null,
       },
       profile: false,
       sub_packagess: false,
+      admissiblite:null,
+      hideFournisseur:true,
+      showPanel:true,
+      showcreatedPackage:true,
+      el:null,
     };
   },
   methods: {
     Deconnexion() {
       axios
-        .get(lien + "auth/logout", {
+        .get(lien + "/api/auth/logout", {
           headers: {
-            Authorization:
-              "Bearer " + JSON.parse(localStorage.getItem("token")),
+            'Authorization': "Bearer " + JSON.parse(localStorage.getItem("token")),
           },
         })
         .then((reponse) => {
@@ -375,7 +451,8 @@ export default {
           if (reponse) {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
-            this.$router.push("/");
+            this.$router.push("/")
+            this.$store.state.user = null
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -387,18 +464,20 @@ export default {
                 toast.addEventListener("mouseleave", Swal.resumeTimer);
               },
             });
-
+ 
             Toast.fire({
               icon: "success",
               title: "Deconnecte",
             });
+            
           }
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        
+        
     },
     showPackages() {
+      let arrow_bas_invest = document.getElementById("arrow_bas_invest")
+      let arrowVente = document.getElementById("arrow_bas_six");
       let arrow_bas_five = document.getElementById("arrow_bas_five");
       let arrow_Bas_four = document.getElementById("arrow_bas_four");
       let arrow_Bas = document.getElementById("arrow_bas_three");
@@ -415,17 +494,29 @@ export default {
       if (this.sub_packages == false) {
         fleche.style.transform = "rotate(0deg)";
       }
-      if (this.sub_packagess == true || this.sub_fournisseur == true || this.sub_scribe == true) {
+      if (
+        this.sub_packagess == true ||
+        this.sub_fournisseur == true ||
+        this.sub_scribe == true ||
+        this.sub_vente == true ||
+        this.sub_invest == true
+      ) {
         this.sub_packagess = false;
+         this.sub_vente = false;
         this.sub_scribe = false;
         this.sub_fournisseur = false;
+        this.sub_invest = false
         arrow_Bas.style.transform = "rotate(0deg)";
         arrow_Bas_four.style.transform = "rotate(0deg)";
         arrow_bas_five.style.transform = "rotate(0deg)";
+        arrowVente.style.transform = "rotate(0deg)";
+        arrow_bas_invest.style.transform = "rotate(0deg)";
       }
     },
     showUser() {
-        let arrow_bas_five = document.getElementById("arrow_bas_five");
+      let arrow_bas_invest = document.getElementById("arrow_bas_invest")
+       let arrowVente = document.getElementById("arrow_bas_six");
+      let arrow_bas_five = document.getElementById("arrow_bas_five");
       let arrow_Bas_four = document.getElementById("arrow_bas_four");
       let arrow_Bas = document.getElementById("arrow_bas_three");
       let arrow = document.getElementById("arrow-bas_two");
@@ -444,23 +535,32 @@ export default {
       if (
         this.sub_packages == true ||
         this.sub_fournisseur == true ||
-        this.sub_packagess == true || this.sub_scribe == true
+        this.sub_packagess == true ||
+        this.sub_scribe == true ||
+        this.sub_vente == true ||
+        this.sub_invest == true
       ) {
         this.sub_packagess = false;
+        this.sub_vente == false;
         this.sub_packages = false;
         this.sub_fournisseur = false;
         this.sub_scribe = false;
+        this.sub_invest = false
         arrow.style.transform = "rotate(180deg)";
         arrow_Bas_four.style.transform = "rotate(0deg)";
         arrow_Bas.style.transform = "rotate(0deg)";
         arrow_bas_five.style.transform = "rotate(0deg)";
+        arrowVente.style.transform = "rotate(0deg)";
+        arrow_bas_invest.style.transform = "rotate(0deg)";
       }
     },
     show_packagess() {
+      let arrow_bas_invest = document.getElementById("arrow_bas_invest")
+      let arrowVente = document.getElementById("arrow_bas_six");
       let arrow_Bas_four = document.getElementById("arrow_bas_four");
       let arrow = document.getElementById("arrow-bas_two");
       let fleche = document.getElementById("arrow-bas");
-       let arrow_bas_five = document.getElementById("arrow_bas_five");
+      let arrow_bas_five = document.getElementById("arrow_bas_five");
       let arrow_Bas = document.getElementById("arrow_bas_three");
       this.sub_packagess = !this.sub_packagess;
       if (this.sub_packagess == true) {
@@ -469,21 +569,29 @@ export default {
       if (
         this.sub_user == true ||
         this.sub_packages == true ||
-        this.sub_fournisseur == true
+        this.sub_fournisseur == true ||
+         this.sub_vente == true  ||
+         this.sub_invest == true
       ) {
         this.sub_user = false;
+         this.sub_vente == false
         this.sub_packages = false;
         this.sub_fournisseur = false;
+        this.sub_invest = false
         arrow.style.transform = "rotate(0deg)";
         fleche.style.transform = "rotate(0deg)";
         arrow_Bas_four.style.transform = "rotate(0deg)";
-         arrow_bas_five.style.transform = "rotate(0deg)";
+        arrow_bas_five.style.transform = "rotate(0deg)";
+        arrowVente.style.transform = "rotate(0deg)";
+        arrow_bas_invest.style.transform = "rotate(0deg)";
       }
       if (this.sub_packagess == false) {
         arrow_Bas.style.transform = "rotate(0deg)";
       }
     },
     show_fourni() {
+      let arrow_bas_invest = document.getElementById("arrow_bas_invest")
+      let arrowVente = document.getElementById("arrow_bas_six");
       let arrow_bas_five = document.getElementById("arrow_bas_five");
       let arrow = document.getElementById("arrow-bas_two");
       let fleche = document.getElementById("arrow-bas");
@@ -499,25 +607,35 @@ export default {
       if (
         this.sub_user == true ||
         this.sub_packages == true ||
-        this.sub_packagess == true || this.sub_scribe == true
+        this.sub_packagess == true ||
+        this.sub_scribe == true  ||
+        this.sub_vente == true ||
+        this.sub_invest == true
       ) {
         this.sub_user = false;
+        this.sub_vente= false;
         this.sub_packages = false;
         this.sub_packagess = false;
         this.sub_scribe = false;
+         this.sub_invest = false
         arrow.style.transform = "rotate(0deg)";
         fleche.style.transform = "rotate(0deg)";
         arrow_Bas_four.style.transform = "rotate(180deg)";
         arrow_Bas.style.transform = "rotate(0deg)";
-         arrow_bas_five.style.transform = "rotate(0deg)";
+        arrow_bas_five.style.transform = "rotate(0deg)";
+        arrowVente.style.transform = "rotate(0deg)";
+        arrow_bas_invest.style.transform = "rotate(0deg)";
       }
     },
     show_scribe() {
+      let arrow_bas_invest = document.getElementById("arrow_bas_invest")
       let arrow_Bas = document.getElementById("arrow_bas_three");
       let arrow_Bas_four = document.getElementById("arrow_bas_four");
-       let fleche = document.getElementById("arrow-bas");
+      let fleche = document.getElementById("arrow-bas");
       let arrow = document.getElementById("arrow-bas_two");
       let arrow_bas_five = document.getElementById("arrow_bas_five");
+      let arrowVente = document.getElementById("arrow_bas_six");
+      
       this.sub_scribe = !this.sub_scribe;
       if (this.sub_scribe == true) {
         arrow_bas_five.style.transform = "rotate(180deg)";
@@ -528,34 +646,106 @@ export default {
       if (
         this.sub_user == true ||
         this.sub_packages == true ||
-        this.sub_packagess == true || this.sub_fournisseur == true
+        this.sub_packagess == true ||
+        this.sub_fournisseur == true ||
+        this.sub_vente == true  ||
+        this.sub_invest == true
       ) {
         this.sub_user = false;
+        this.sub_vente = false;
         this.sub_fournisseur = false;
         this.sub_packages = false;
         this.sub_packagess = false;
         this.sub_scribe = true;
+        this.sub_invest = false
         arrow.style.transform = "rotate(0deg)";
         fleche.style.transform = "rotate(0deg)";
         arrow_Bas_four.style.transform = "rotate(0deg)";
-         arrow_bas_five.style.transform = "rotate(180deg)";
+        arrow_bas_five.style.transform = "rotate(180deg)";
         arrow_Bas.style.transform = "rotate(0deg)";
+        arrowVente.style.transform = "rotate(0deg)";
+        arrow_bas_invest.style.transform = "rotate(0deg)";
       }
     },
-    show_vente(){
-      let arrowVente = document.getElementById("arrow_bas_six")
+    show_vente() {
+      let arrow_bas_invest = document.getElementById("arrow_bas_invest")
+      let arrowVente = document.getElementById("arrow_bas_six");
+      let arrow_Bas = document.getElementById("arrow_bas_three");
+      let arrow_Bas_four = document.getElementById("arrow_bas_four");
+      let fleche = document.getElementById("arrow-bas");
+      let arrow = document.getElementById("arrow-bas_two");
+      let arrow_bas_five = document.getElementById("arrow_bas_five");
       this.sub_vente = !this.sub_vente;
-      if(this.sub_vente == true){
-        arrowVente.style.transform = "rotate(180deg)"
+      if (this.sub_vente == true) {
+        arrowVente.style.transform = "rotate(180deg)";
       }
-      if(this.sub_vente == false){
-        arrowVente.style.transform = "rotate(0deg)"
+      if (this.sub_vente == false) {
+        arrowVente.style.transform = "rotate(0deg)";
       }
+      if (
+        this.sub_user == true ||
+        this.sub_scribe == true ||
+        this.sub_packages == true ||
+        this.sub_packagess == true ||
+        this.sub_fournisseur == true ||
+        this.sub_invest == true
+      ) {
+        this.sub_scribe = false;
+        this.sub_packages = false;
+        this.sub_packagess = false;
+        this.sub_fournisseur = false;
+        this.sub_user = false;
+        this.sub_invest = false;
+        arrow_bas_five.style.transform = "rotate(0deg)";
+        arrow.style.transform = "rotate(0deg)";
+        fleche.style.transform = "rotate(0deg)";
+        arrow_Bas_four.style.transform = "rotate(0deg)";
+        arrow_bas_five.style.transform = "rotate(0deg)";
+        arrow_Bas.style.transform = "rotate(0deg)";
+        arrow_bas_invest.style.transform = "rotate(0deg)";
+      }
+    },
+    show_invest() {
 
+     let arrow_Bas = document.getElementById("arrow_bas_three");
+      let arrow_Bas_four = document.getElementById("arrow_bas_four");
+      let fleche = document.getElementById("arrow-bas");
+      let arrow = document.getElementById("arrow-bas_two");
+      let arrow_bas_five = document.getElementById("arrow_bas_five");
+      let arrowVente = document.getElementById("arrow_bas_six");
+
+      let arrow_bas_invest = document.getElementById("arrow_bas_invest")
+      this.sub_invest = !this.sub_invest;
+      if (this.sub_invest == true) {
+       arrow_bas_invest.style.transform = "rotate(180deg)";
+      }
+      if (this.sub_invest == false) {
+       arrow_bas_invest.style.transform = "rotate(0deg)";
+      }
+      if (
+        this.sub_user == true ||
+        this.sub_packages == true ||
+        this.sub_packagess == true ||
+        this.sub_fournisseur == true ||
+        this.sub_vente == true  ||
+        this.sub_scribe == true
+      ) {
+        this.sub_user = false;
+        this.sub_vente = false;
+        this.sub_fournisseur = false;
+        this.sub_packages = false;
+        this.sub_packagess = false;
+        this.sub_scribe = false;
+        arrow.style.transform = "rotate(0deg)";
+        fleche.style.transform = "rotate(0deg)";
+        arrow_Bas_four.style.transform = "rotate(0deg)";
+        arrow_bas_five.style.transform = "rotate(0deg)";
+        arrow_Bas.style.transform = "rotate(0deg)";
+        arrowVente.style.transform = "rotate(0deg)";
+      }
     },
     modify_my_profil() {
-      this.profile = !this.profile
-
+      this.profile = !this.profile;
     },
     toogle_menu() {
       let barre = document.getElementById("box-menu");
@@ -564,48 +754,72 @@ export default {
       barre.classList.toggle("push");
     },
     modify_profil_user() {
-        this.userCompte.nom = this.user.nom,
-        this.userCompte.prenoms = this.user.prenoms,
-        this.userCompte.phone = this.user.phone,
-        this.userCompte.email = this.user.email,
-        this.userCompte.lieu_habitation = this.user.lieu_habitation,
-        this.userCompte.password = this.userCompte.pass
+      (this.userCompte.nom = this.user.nom),
+        (this.userCompte.prenoms = this.user.prenoms),
+        (this.userCompte.phone = this.user.phone),
+        (this.userCompte.email = this.user.email),
+        (this.userCompte.lieu_habitation = this.user.lieu_habitation),
+        (this.userCompte.password = this.userCompte.pass);
       axios
-        .put(lien+'profile/'+this.user.id,this.userCompte,{
-          headers:{ 'Authorization' :'Bearer '+ localStorage.getItem("token")},
+        .put(lien + "/api/profile/" + this.user.id, this.userCompte, {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         })
         .then((reponse) => {
           console.log(reponse);
-          if(reponse.data.status == 'true'){
+          if (reponse.data.status == "true") {
             Swal.fire({
-              text:"Modification effectuée",
-              icon: 'success',
+              text: "Modification effectuée",
+              icon: "success",
               showConfirmButton: false,
               timer: 1500,
               timerProgressBar: true,
             });
-             localStorage.setItem('user',JSON.stringify(reponse.data.data))
-            this.profile = !this.profile
+            localStorage.setItem("user", JSON.stringify(reponse.data.data));
+            this.profile = !this.profile;
           }
         })
         .catch((error) => {
           console.log(error);
         });
     },
+    getRole(){
+      if(this.admissiblite == "fournisseur"){
+         this.showPanel = false
+         this.showcreatedPackage = true
+      }
+      if(this.admissiblite == "admin"){
+         this.showPanel = true
+         this.showcreatedPackage = false
+      }
+    },
+    userAD(){
+      if(this.$store.state.token !== null){
+        this.user = this.$store.state.user
+        this.admissiblite = this.user.tab[0]
+      }
+      if(this.$store.state.token === null){
+        this.user = null
+      }
+    },
+  
+
   },
-  computed:{
-   char(){
-      let nom = this.user.nom
-      let prenom = this.user.prenoms
-      let char = nom.charAt(0)
-      let charPrenom = prenom.charAt(0)
-      let Mychart = char+charPrenom
+  computed: {
+    char() {
+      let nom = this.user.nom;
+      let prenom = this.user.prenoms;
+      let char = nom.charAt(0);
+      let charPrenom = prenom.charAt(0);
+      let Mychart = char + charPrenom;
       return Mychart.toUpperCase();
-   }
+    },                               
   },
-  created() {
-    this.user = this.$store.state.user;
-    console.log(this.user);
+  created(){
+    console.log("INFO USER",this.user);
+    console.log("ROUTE",this.$route.name);
+    this.userAD()
+    this.getRole()
+     console.log("ROLE",this.admissiblite);
   },
 };
 </script>
@@ -616,20 +830,25 @@ aside * {
 .dropdown-item {
   color: black !important;
 }
-.bi-box,.bi-person,.bi-filter-square,.bi-person-rolodex,.bi-box-seam,.bi-people{
-color:rgb(236, 182, 4) !important;
+.bi-box,
+.bi-person,
+.bi-filter-square,
+.bi-person-rolodex,
+.bi-box-seam,
+.bi-people {
+  color: rgb(236, 182, 4) !important;
 }
-.profile{
-   width:60px;
-   height:60px;
-   background: rgba(152, 151, 151, 0.601);
-   margin:0 auto;
-   line-height: 60px;
-   border:3px solid rgb(236, 182, 4);
+.profile {
+  width: 60px;
+  height: 60px;
+  background: rgba(152, 151, 151, 0.601);
+  margin: 0 auto;
+  line-height: 60px;
+  border: 3px solid rgb(236, 182, 4);
 }
 
-.img-person-circle{
-font-size:2.5em;
+.img-person-circle {
+  font-size: 2.5em;
 }
 .bi-chevron-down {
   right: 1em;
@@ -661,10 +880,10 @@ font-size:2.5em;
 }
 .left-sidebar {
   background: rgb(3, 3, 3) !important;
-  overflow: auto;
+  overflow-y:auto;
   z-index: 90 !important;
 }
-.left-sidebar::-webkit-scrollbar-track{
+.left-sidebar::-webkit-scrollbar-track {
   border: 1px solid rgb(191, 191, 191);
   padding: 2px 0;
   background-color: #d1d0d0;
@@ -676,8 +895,8 @@ font-size:2.5em;
 
 .left-sidebar::-webkit-scrollbar-thumb {
   border-radius: 10px;
-   height:56px !important;
-  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  height: 56px !important;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: rgb(236, 182, 4);
   border: 1px solid rgb(175, 175, 175);
 }
@@ -709,10 +928,10 @@ ul {
   display: flex;
   align-items: center;
 }
-.btn-primary{
-background: rgb(231, 202, 15) !important;
-border:3px solid black !important;
-color:black !important;
+.btn-primary {
+  background: rgb(231, 202, 15) !important;
+  border: 3px solid black !important;
+  color: black !important;
 }
 button:active {
   transform: translateY(-3px) scale(0.9);
@@ -741,6 +960,9 @@ button:active {
 
 #box-menu {
   display: none;
+}
+.sidebar-nav{
+padding:0 !important;
 }
 
 @media screen and (max-width: 1169px) {

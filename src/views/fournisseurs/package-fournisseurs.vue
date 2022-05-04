@@ -12,31 +12,42 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span>Package d'un utilisateur</span></li>
+              <li class="fw-bold h3"><span v-if="user !== null">Article(s) de {{user.nom}} {{user.prenoms}}</span></li>
             </ol>
           </div>
         </div> 
       </div>
        <div class="icon">
-        <a href="javascript:void(0)" class="back h1" @click="$router.go(-1)"
+        <a href="javascript:void(0)" class="back h4" @click="$router.go(-1)"
           ><box-icon name="left-arrow-alt" animation="tada"></box-icon
-        ></a>
+        >Fournisseur</a>
       </div>
       </div>
        <div class="row container-fluid">
       <div class="col-md-12">
-       <h1 v-if="user">{{user.nom}} {{user.prenoms}}</h1>
+      <div class="user" v-if="user !== null">
+       <span> <b class="fw-bold">Nom</b>  : <input type="text" v-model="user.nom" disabled></span> <br>
+       <span><b class="fw-bold">prenoms</b> : <input type="text" v-model="user.prenoms" disabled></span> <br>
+       <span><b class="fw-bold">email</b> : <input type="text" v-model="user.email" disabled></span><br>
+       <span><b class="fw-bold">Télephone</b> : <input type="text" v-model="user.phone" disabled></span> <br>
+       <span><b class="fw-bold">Registre de commerce</b> : <input type="text" v-model="user.registre_commerce" disabled></span> <br>
+        
+      </div>
         <div>
           <table id="MyTableData" class="table" v-if="packages_fournisseur !== null">
             <thead>
               <tr>
-                <th class="bg-light">Numéro</th>
-                 <th class="bg-light">Nom du package</th>
-                <th class="bg-light">Cout d'acquisition</th>
-                  <th class="bg-light">Cout de vente</th>
-                <th class="bg-light">Délai</th>
-                <th class="bg-light">Nombre de produits</th>
-                <th class="bg-light">Gain</th>
+                <th class="bg-light">#</th>
+                 <th class="bg-light">Nom de l'article</th>
+                <th class="bg-light">Prix d'achat par pièce</th>
+                <th class="bg-light">Prix de vente par pièce</th>
+                <th class="bg-light">Nombre de pièces</th>
+                  <th class="bg-light">Cout du package</th>
+                <th class="bg-light">Prix final du package</th>
+                
+                <!-- <th class="bg-light">publication</th> -->
+                <!-- <th class="bg-light">Date de creation</th> -->
+                <!-- <th class="bg-light">Date d'échéance</th> -->
               </tr>
             </thead>
             <tbody>
@@ -54,14 +65,33 @@
                   {{this.moneyFormat.format(item.cout_vente)}} Fcfa
                 </td>
                 <td>
+                  {{ item.nb_products}}
+                </td>
+                 <td>
+                  {{this.moneyFormat.format(item.cout_acquisition * item.nb_products)}} Fcfa
+                </td>
+                <td>
+                  {{this.moneyFormat.format(item.cout_vente * item.nb_products)}} Fcfa
+                </td>
+                <!-- <td>
                   {{ item.nb_jours}} jours
                 </td>
                 <td>
                   {{ item.nb_products}}
+                </td> -->
+                <!-- <td>
+                  {{ this.moneyFormat.format(item.gain)}} Fcfa
+                </td> -->
+                <!-- <td>
+                  <span v-if="item.publie == 1" class="badge bg-success bg-gradient">publié</span>
+                  <span v-if="item.publie == 0" class="badge bg-danger bg-gradient">pas encore publié</span>
+                </td> -->
+                <!-- <td>
+                  {{ new Date(item.created_at).toLocaleDateString('fr')}}
                 </td>
                 <td>
-                  {{ this.moneyFormat.format(item.gain)}} Fcfa
-                </td>
+                  {{ new Date(this.addDaysToDate(item.created_at,item.nb_jours)).toLocaleDateString('fr')}}
+                </td> -->
               </tr>
             </tbody>
           </table>
@@ -100,7 +130,7 @@ export default {
     methods: {
              getUser(){
                this.isLoading = true
-          axios.get( lien+"fournisseurs")
+          axios.get( lien+"/api/fournisseurs")
               .then((res) => {
                 console.log("OBTENIR USER",res.data.data);
                 this.user = res.data.data.find(item=>item.id == this.$route.params.id)
@@ -110,12 +140,21 @@ export default {
               .catch(error=>{
                 console.log(error);
               })
-             }
+             },
+            
+    addDaysToDate(date, days){
+    var res = new Date(date);
+    res.setDate(res.getDate() + days);
+    return res;
+   }
+    },
+    computed: {
+  
     },
     created() {
       this.isLoading = true
     axios
-      .get(lien+`fourn_package/${this.$route.params.id}`)
+      .get(lien+`/api/fourn_package/${this.$route.params.id}`)
       .then((res) => {
         console.log("OBTENIRPACKAGES", res);
         this.packages_fournisseur = res.data.data;
@@ -177,5 +216,8 @@ position:relative;
 width:100%;
 bottom:-15em;
 margin-left: 0 !important;
+}
+.user{
+text-align: left;
 }
 </style>

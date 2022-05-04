@@ -12,7 +12,7 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span>Types de Packages</span></li>
+              <li class="fw-bold h3"><span>Packages</span></li>
             </ol>
           </div>
         </div>
@@ -20,9 +20,11 @@
     </div>
 
     <div class="row container">
-    <div class="created_package" v-if="listPackages !== null">
-    <button class="btn btn-lg bouton-create-type-package text-light fw-bold" @click="type_package">Création de type de package</button>
+
+     <div class="created_package">
+    <button class="btn btn-lg bouton-create-type-package text-light fw-bold" @click="type_package">Créer un package</button>
     </div>
+   
       <div class="col-md-12">
         <div class="table-responsive "  v-if="listPackages !== null">
           <table
@@ -30,10 +32,11 @@
             class="table">
             <thead >
               <tr>
-                <th class="bg-light">Numero du type de Packages</th>
-                <th class="bg-light">Type de Packages</th>
+                <th class="bg-light">#</th>
+                <th class="bg-light">Nom du package</th>
+                <th class="bg-light">Photo</th>
                  <th class="bg-light">Date de création</th>
-                <th class=" bg-light text-right">Actions (éditer ou supprimer)</th>
+                <th class=" bg-light text-right">Détails</th>
               </tr>
             </thead>
             <tbody>
@@ -42,13 +45,21 @@
                 {{ index+1 }}
                 </td>
                 <td>{{ item.libelle }}</td>
+                 <td v-if="item.photo"><img class="w-25" :src="lien+item.photo" :alt="item.libelle"></td>
+                 <td v-else>
+                 <img src="#" alt="Pas d'image">
+                 </td>
                  <td>{{new Date(item.created_at).toLocaleDateString('fr')}}</td>
                 <td class="text-right">
-                  <div class="dropdown dropdown-action">
+                  <div class="dropdown dropdown-action d-flex justify-content-center align-self-center">
                     <router-link title="modifier" :to="{name:'ModiyPackage',params:{id:item.id}}"
-                     class="btn btn-lg bg-pen text-light"
+                     class="btn btn-lg bg-pen text-light boutons mx-2"
                      ><i class="bi bi-pencil-fill"></i></router-link>
-                    <button title="supprimer" @click.prevent="show(item.id)" class="btn btn-lg bg-danger m-2 text-light">
+                     <router-link title="voir details" :to="{name:'DetailsPackage',params:{id:item.id}}"
+                     class="btn btn-lg bg-info text-light boutons mx-2"
+                     ><i class="bi bi-eye"></i></router-link>
+
+                    <button title="supprimer" @click.prevent="show(item.id)" class="btn boutons btn-lg bg-danger  text-light">
                     <i class="bi bi-trash3-fill"></i>
                     </button>
                   </div>
@@ -61,16 +72,21 @@
     </div>
     <div class="type_package" v-if="show_type_package">
     <div>
-            <form class="mt-4" @submit.prevent="postType_Package()">
-            <div class="card-header my-5">Creation de type de package</div>
+            <form class="mt-4" @submit.prevent="postType_Packagee">
+            <div class="card-header my-5">Creation de package</div>
               <div class="form-group">
-                <label class="fw-bold mb-3 text-dark">Créer  un Type de package</label>
+                <label class="fw-bold mb-3 text-dark">Créer un package</label>
                 <input
                   type="text"
                   class="form-control w-75 fw-bold mb-3"
                   id="exampleInputEmail1"
-                  placeholder="Entrer le type de package"
+                  placeholder="Entrer le nom du package"
                   v-model="libelle"
+                  required
+                />
+                <input
+                  type="file"
+                  @change="see"
                   required
                 />
               </div>
@@ -86,7 +102,7 @@
     </div>
      <div class="delete_personne" v-show="showMsg">
      <div class="delete">
-     <span class="fw-bold">vous-voulez vraiment supprimer ?</span>
+     <span class="fw-bold">voulez-vous vraiment supprimer?</span>
      <button class="bg bg-pen text-light my-3 border-0 rounded p-2 fw-bold" @click="delete_user(this.id_delete)">Supprimer</button>
      <button class="bg bg-dark text-light border-0 rounded p-2 fw-bold" @click="fermer">Annuler</button>
      </div>
@@ -101,7 +117,6 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 import Header from '@/components/header'
 import Menu from '@/components/menu'
 import Footer from '@/components/footer'
-
 import {lien} from '/src/assets/api.js'
 import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
@@ -120,6 +135,8 @@ export default {
       isLoading:false,
       id_delete:null,
       showMsg:false,
+      photo:null,
+      libelle:null,
     };
   },
 
@@ -128,11 +145,15 @@ export default {
     type_package(){
     this.show_type_package = !this.show_type_package
     },
-
-     postType_Package(){
-    axios.post(lien+"types",{
-        libelle : this.libelle
-    })
+    see(e){
+    this.photo = e.target.files[0]
+    console.log(this.photo);
+    },
+     postType_Packagee(){
+       let data = new FormData();
+       data.append('photo',this.photo)
+       data.append('libelle',this.libelle)
+    axios.post(lien+"/api/types",data)
     .then(reponse =>{
         console.log("POSTTYPEPACKAGE",reponse);
         if(reponse.data.status === "true"){
@@ -143,10 +164,10 @@ export default {
               timer: 1500,
               timerProgressBar: true,
             });
-            
+            setTimeout(()=>{
+       location.reload(true)
+        },1500);
         }
-        location.reload(true);
-       
     })
     .catch(error=>{
         console.log(error);
@@ -156,7 +177,7 @@ export default {
 
     getData(){
       this.isLoading = true;
-      axios.get(lien+"types")
+      axios.get(lien+"/api/types")
       .then((res) => {
       console.log("OBTENIRPACKAGES", res);
       this.listPackages = res.data.data;
@@ -199,10 +220,34 @@ export default {
 
     },
    delete_user(id){
-     axios.delete(lien+'types/'+id)
+     axios.delete(lien+'/api/types/'+id)
      .then(reponse =>{
-        console.log("DELETEARRAY",reponse);
-        location.reload(true);
+        console.log("DELETEARRAY",reponse.data);
+       if(reponse.data.status === 'true'){
+         if(reponse.data.data){
+           Swal.fire({
+              text:"Type de package utilisé impossible a supprimer ",
+              icon: 'error',
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+            });
+         }
+       }
+       if(reponse.data.status === 'deleted'){
+             Swal.fire({
+              text:"type de package supprimer",
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+            });
+         setTimeout(()=>{
+       location.reload(true)
+        },1500);
+       }
+       this.showMsg = false
+      
      })
      .catch(error=>{
        console.log(error);
@@ -218,9 +263,6 @@ export default {
          this.id_delete = null
           console.log("ID A DELETE",this.id_delete);
        }
-
-
-
   },
 
 
@@ -238,13 +280,7 @@ border:thin solid rgba(139, 139, 139, 0.63) !important;
 th,td{
  border:thin solid rgba(141, 140, 140, 0.692) !important;
 }
-.created_package{
-text-align:left;
-}
-.created_package button{
-background: linear-gradient(200deg, rgb(231, 202, 15),rgb(194, 191, 19));
-border:3px solid black !important;
-}
+
 .type_package{
 position:fixed;
 left:0;
@@ -274,7 +310,7 @@ font-weight:bold !important;
 .my_footer{
 position:relative;
 width:100%;
-bottom:-20em;
+bottom:-10em;
 margin-left: 0 !important;
 }
 button:active{
@@ -283,11 +319,14 @@ scale(0.9);
 }
 .bg-pen{
 background: rgb(231, 202, 15) !important;
-border:3px solid black !important;
+border:2px solid black !important;
+}
+.bg-info{
+  border:2px solid black !important;
 }
 .bg-danger{
 background: crimson !important;
-border:3px solid black !important;
+border:2px solid black !important;
 }
 .delete_personne{
 position:fixed;
@@ -307,6 +346,31 @@ flex-direction:column;
 background: white;
 border-radius:10px ;
 box-shadow:1px 1px 10px rgba(0, 0, 0, 0.285);
+}
+.boutons{
+width:28px !important;
+height:28px !important;
+display: flex;
+place-items: center;
+justify-content: center;
+}
+.created_package{
+text-align:left;
+margin-bottom:1em;
+}
+.created_package button{
+background: linear-gradient(200deg, rgb(231, 202, 15),rgb(194, 191, 19));
+border:2px solid black !important;
+
+}
+.w-25{
+  width:50px !important;
+}
+input,select{ 
+  border: 1px solid black !important;
+}
+.form-group{ 
+  text-align: left !important;
 }
 </style>
 

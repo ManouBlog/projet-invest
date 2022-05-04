@@ -17,29 +17,6 @@
     
     
     <div class="form-body">
-    <div class="created_role" v-show="showCreated" >
-    <form class="from_create_role">
-    <div class="col-md-12">
-              <div class="form-group">
-                <label class="form-label h4">Creer un role</label>
-                <input
-                  type="text"
-                  
-                  class="form-control"
-                  placeholder="Nom"
-                  v-model="role"
-                />
-              </div>
-            </div>
-        <div>
-        <button class="btn-valider btn-lg mx-2 border-0 p-2" @click="creation_role">valider</button>
-        <button class="btn-dark btn-lg border-0 p-2" @click="created_role_show">annuler</button>
-        </div>
-    </form>
-    </div>
-    <div class="bouton_create-role">
-     <button class="btn btn-lg btn-creer-role" @click="created_role_show">creer un role</button>
-    </div>
       <div class="card-body">
         <div class="row pt-3">
           <div class="col-md-6">
@@ -127,7 +104,7 @@
          <div class="col-md-6">
               <div class="form-group">
                 <label class="form-label">Assigner un role</label>
-                <select class="w-100 form-group" v-model="role_id" id="role">
+                <select class="w-100 form-group" v-model="role_id" id="role" multiple>
                   <option value="" disabled>ROLE</option>
                   <option
                     v-for="role in listRole"
@@ -139,6 +116,18 @@
                 </select>
               </div>
             </div>
+             <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Registre de commerce</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="ex:17373HDD73HSHS"
+                v-model="registre"
+                 required
+              />
+            </div>
+          </div>
           <!--/span-->
         </div>
         <!--/row-->
@@ -193,30 +182,31 @@ export default {
       lieu_habitation: null,
       password: null,
       listRole:null,
-      role_id:null,
+      role_id:[],
       showCreated:false,
       role:null,
+      registre:null,
     };
   },
 
   //+++++ METHODES ++++//
   methods: {
     poster_user() {
-      let value = document.getElementById("role").value;
+      console.log("ROLES",this.role_id);
       axios
-        .post(lien + "users", {
+        .post(lien + "/api/users", {
           nom: this.nom,
           prenoms: this.prenoms,
           phone: this.phone,
           email: this.email,
           lieu_habitation: this.lieu_habitation,
           password: this.password,
-          role_id: value
+          role_id: this.role_id,
+          registre_commerce:this.registre,
         })
         .then((reponse) => {
-          console.log("POSTERUSER", reponse);
+          console.log("POSTERUSER", reponse.data);
           if (reponse.data.status == "true") {
-            
             Swal.fire({
               text: "Utilisateur crée",
               icon: "success",
@@ -224,11 +214,13 @@ export default {
               timer: 1500,
               timerProgressBar: true,
             });
-            this.$router.push("/listusers")
+           setTimeout(()=>{
+              this.$router.push("/listusers")
+           },1500)
           }
           if (reponse.data.status == "false") {
             Swal.fire({
-              text: "Utilisateur crée",
+              text: "Veuillez remplir tous les champs",
               icon: "error",
               showConfirmButton: false,
               timer: 1500,
@@ -238,13 +230,20 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          Swal.fire({
+              text: "Veuillez remplir tous les champs",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+            });
         });
     },
     created_role_show(){
      this.showCreated = !this.showCreated
     },
       get_role(){
-  axios.get(lien + "roles")
+  axios.get(lien + "/api/roles")
       .then((reponse) => {
         console.log("ROLES:", reponse.data.data);
         this.listRole = reponse.data.data;
@@ -256,7 +255,7 @@ export default {
 
 
     creation_role(){
-     axios.post(lien +"roles",{
+     axios.post(lien +"/api/roles",{
      libelle: this.role
     })
       .then((reponse) => {
@@ -293,7 +292,7 @@ margin-left: 0 !important;
 }
 select {
   padding: 0.589em !important;
-  border: none !important;
+
   border-radius: 0.25rem;
 }
 select:active {
@@ -333,5 +332,14 @@ justify-content: center;
 background: rgb(253, 251, 251);
 padding: 5em;
 margin-left:10%;
+}
+input,select{ 
+  border: 1px solid black !important;
+}
+.form-group{ 
+  text-align: left !important;
+}
+label{
+  font-weight:bold !important;
 }
 </style>

@@ -22,6 +22,7 @@
      </div>
     </div>
    <h1 v-if="libelle !== null">Nom de l'article : {{libelle.libelle}}</h1>
+   <span  v-if="libelle !== null && libelle.commentaire_rejet" class="alert alert-danger w-100" role="alert">{{libelle.commentaire_rejet}}</span>
     <form  @submit.prevent="modify">
     <div class="form-body" v-if="listPackages">
       <div class="card-body">
@@ -36,7 +37,7 @@
                 placeholder="ex:12000 fcfa"
                 v-model="libelle.cout_acquisition"
                 pattern="^([0-9]*)$"
-                disabled
+                
               />
             </div>
           </div>
@@ -50,7 +51,7 @@
                 class="form-control form-control-danger"
                 placeholder="ex:3000 fcfa"
                 v-model="libelle.cout_vente"
-                disabled
+                
               />
             </div>
           </div>
@@ -68,7 +69,7 @@
                 v-model="libelle.nb_jours"
                 pattern="^([0-9]*)$"
                 required
-                disabled
+                
               />
             </div>
           </div>
@@ -83,7 +84,7 @@
                 placeholder="ex:200"
                 v-model="libelle.nb_products"
                 pattern="^([0-9]*)$"
-                disabled
+                
               />
             </div>
           </div>
@@ -99,11 +100,27 @@
                 class="form-control"
                 v-model="libelle.libelle"
                 required
-                disabled
+                
               />
             </div>
           </div>
           <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Choisir le package</label>
+                <select class="w-100 form-group types" v-model="libelle.type.id" id="type">
+                  <option value="" disabled selected>Packages</option>
+                  <option
+                    v-for="type in list_type_packages"
+                    :key="type.id"
+                    :value="type.id"
+                    :label="type.libelle"
+                  >
+                    {{ type.libelle }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          <!-- <div class="col-md-6">
             <div class="form-group">
               <label class="form-label">Nom du fournisseur</label>
               <input
@@ -111,12 +128,12 @@
                 class="form-control"
                 v-model="libelle.seller.nom"
                 required
-                disabled
+                
               />
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group" v-if="libelle.sell.length >= 1">
+          </div> -->
+          <!-- <div class="col-md-6">
+            <div class="form-group">
               <label class="form-label">Publication</label>
               <select @change="changePublication(libelle.etat)" v-model="libelle.etat" class="w-100 publie">
               <option value='en cours de traitement'>En cours de traitement</option>
@@ -124,13 +141,13 @@
               <option value='rejete'>Réjeter</option>
               </select>
             </div>
-          </div>
-          <div class="col-md-6">
+          </div> -->
+          <!-- <div class="col-md-6">
             <div class="form-group" v-show="showComment">
               <label class="form-label">Commentaire</label> <br>
-              <textarea class="w-100" v-model="libelle.commentaire_rejet" id="comment" cols="10" rows="10"></textarea>
+              <textarea class="w-100" v-model="comment" id="comment" cols="10" rows="10"></textarea>
             </div>
-          </div>
+          </div> -->
         </div>
         <!--/row-->
 
@@ -173,10 +190,10 @@ export default {
     user:this.$store.state.user,
     publie:null,
     isLoading:false,
-    type_id:null,
-    userman_id:null,
-    showComment:false,
-    comment:null,
+    // type_id:null,
+    // userman_id:null,
+    // showComment:false,
+    // comment:null,
     
   }
   },
@@ -186,21 +203,21 @@ export default {
     Footer,Loading
   },
 created(){
-  
+  this.get_Package()
   this.isLoading = true
   //======== ceci sert a recupere les informations de l utilisateur//
     axios.get(lien+"/api/packages")
     .then(reponse=>{
-        console.log("TYPES DE PACKAGE",reponse.data.data);
+        console.log("ARTicle a modifier",reponse.data.data);
         this.listPackages = reponse.data.data;
         this.libelle = this.listPackages.find(item => item.id == this.$route.params.id)
-        this.type_id = this.libelle.type_id
-        this.userman_id = this.libelle.user_id
-        this.modeRejet()
+        // this.type_id = this.libelle.type_id
+        // this.userman_id = this.libelle.user_id
+        // this.modeRejet()
         // this.libelle_name = this.libelle.libelle
         console.log("LIBELLE",this.libelle);
-         console.log("IDLIBELLE",this.type_id);
-         console.log("Userman",this.userman_id);
+        //  console.log("IDLIBELLE",this.type_id);
+        //  console.log("Userman",this.userman_id);
         this.isLoading = false
     })
     .catch(error=>{
@@ -211,28 +228,40 @@ created(){
   console.log("USER",this.user.id);
 },
 methods:{
-  changePublication(event){
-     if(event == 'rejete'){
-       this.showComment = true
-     }
-      if(event == 'en cours de traitement'){
-       this.showComment = false
-     }
-       if(event == 'publie'){
-       this.showComment = false
-     }
-  },
-   modeRejet(){
-      if(this.libelle.etat === "rejete"){
-        this.showComment = true
-      }
-   },
+
+    get_Package(){
+    axios.get(lien+"/api/types")
+    .then(reponse =>{
+        console.log("POSTTYPEPACKAGE",reponse); 
+        this.list_type_packages = reponse.data.data
+    })
+    .catch(error=>{
+        console.log(error);
+    })
+
+    },
+//   changePublication(event){
+//      if(event == 'rejete'){
+//        this.showComment = true
+//      }
+//       if(event == 'en cours de traitement'){
+//        this.showComment = false
+//      }
+//        if(event == 'publie'){
+//        this.showComment = false
+//      }
+//   },
+//    modeRejet(){
+//       if(this.libelle.etat === "rejete"){
+//         this.showComment = true
+//       }
+//    },
      modify(){
        console.log("TYPE_ID",this.type_id);
        console.log("USER_ID",this.user.id);
         axios.put(lien+`/api/packages/${this.$route.params.id}`,{
            etat:this.libelle.etat,
-           commentaire:this.libelle.commentaire_rejet
+           commentaire:this.comment
         })
         .then(reponse =>{
         console.log("MODIFY DATA",reponse);
@@ -306,12 +335,18 @@ width:100%;
 bottom:-8em;
 margin-left: 0 !important;
 }
+select {
+  padding: 0.589em !important;
+
+  border-radius: 0.25rem;
+}
+select:active {
+  border: 1px solid rgb(134, 134, 134);
+}
 input,select{ 
   border: 1px solid black !important;
 }
 .form-group{ 
   text-align: left !important;
 }
-
-
 </style>

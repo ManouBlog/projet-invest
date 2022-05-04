@@ -8,7 +8,7 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span>Enregistré le rapport de ventes</span></li>
+              <li class="fw-bold h3"><span>Enregistré le rapport de vente du jour</span></li>
             </ol>
           </div>
         </div>
@@ -16,27 +16,31 @@
     </div>
 
      <div class="form-body">
+      <form  @submit.prevent="send_rapport">
+     
       <div class="card-body">
         <div class="row pt-3">
           <div class="col-md-6">
             <div class="form-group">
-              <label class="form-label">Nombre total de produits</label>
+              <label class="form-label fw-bold">Nombre total de pièces</label>
               <input
                 type="text"
                 class="form-control"
-                placeholder="le nombre total de produits vendus dans la journée"
+                placeholder="le nombre total de pièces vendus (ex:500)"
                 v-model="nb_vente"
+                required
+                pattern="^([0-9]*)$"
               />
             </div>
           </div>
           <!--/span-->
           <div class="col-md-6">
               <div class="form-group">
-                <label class="form-label">Choisir le type de package</label>
+                <label class="form-label fw-bold">Choisir le nom de l'article</label>
                 <select class="w-100 form-group" v-model="type_id" id="type">
-                  <option value="" disabled>Type_packages</option>
+                  <option disabled value="">Mes_articles</option>
                   <option
-                    v-for="type in list_type_packages"
+                    v-for="type in list_packages"
                     :key="type.id"
                     :value="type.id"
                   >
@@ -47,21 +51,21 @@
             </div>
           <!--/span-->
         </div>
-      </div>
-      <div class="form-actions">
+      </div>      
         <div class="card-body">
           <button
-            @click="send_rapport"
             type="submit"
             class="btn text-white mx-3 btn-envoyer"
-          >
+           :disabled="
+              type_id === null
+            ">
             Enregistrer
           </button>
           <button @click="$router.go(-1)" type="button" class="btn btn-dark">
             Annuler
           </button>
-        </div>
       </div>
+      </form>
     </div>
 
     
@@ -85,17 +89,21 @@ export default {
     },
     data() {
      return{
-         list_type_packages:null,
+         list_packages:null,
          nb_vente:null,
-         type_id:null
+         type_id:null,
+         user:this.$store.state.user
      }
     },
     methods: {
          get_Package(){
-    axios.get(lien+"types")
+       axios.get(lien+"/api/souscris/"+this.user.id,
+    { headers: {
+            'Authorization':"Bearer "+this.$store.state.token,
+          },})
     .then(reponse =>{
         console.log("POSTTYPEPACKAGE",reponse); 
-        this.list_type_packages = reponse.data.data
+        this.list_packages = reponse.data.data
     })
     .catch(error=>{
         console.log(error);
@@ -103,19 +111,37 @@ export default {
 
     },
     send_rapport(){
-    axios.post(lien+"ventes",{
+      let red = document.getElementById("type").value
+      console.log(`${this.nb_vente} et ${red}`);
+    axios.post(lien+"/api/ventes",{
         nb_ventes:this.nb_vente,
-        type_id:this.type_id
+        package_id:this.type_id
     })
        .then(reponse =>{
-        if(reponse){
+         console.log("sendRapport",reponse.data.data);
+         console.log(reponse);
+        if(reponse.data.status == 'true'){
              Swal.fire({
               text: "Rapport envoyé",
               icon: "success",
               showConfirmButton: false,
               timer: 1500,
               timerProgressBar: true,
-            });
+            })
+            this.nb_vente =" "
+            this.type_id =" "
+          //  setTimeout(()=>{
+          //     this.$router.push("/list-rapport-ventes")
+          //  },1500)
+        }
+        if(reponse.data.status === false){
+          Swal.fire({
+              text: reponse.data.message,
+              icon: "info",
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+            })
         }
     })
     .catch(error=>{
@@ -138,7 +164,6 @@ export default {
 <style scoped>
 select {
   padding: 0.589em !important;
-  border: none !important;
   border-radius: 0.25rem;
 }
 select:active {
@@ -155,5 +180,12 @@ background: rgb(231, 202, 15) !important;
 color:black !important;
 border:3px solid black !important;
 }
+input,select{ 
+  border: 1px solid black !important;
+}
+.form-group{ 
+  text-align: left !important;
+}
+
 
 </style>

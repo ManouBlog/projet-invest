@@ -1,9 +1,11 @@
 <template>
- <loading :active="isLoading" 
-        :can-cancel="true" 
-        :on-cancel="onCancel"
-        :is-full-page="fullPage"></loading>
- <Header></Header>
+  <loading
+    :active="isLoading"
+    :can-cancel="true"
+    :on-cancel="onCancel"
+    :is-full-page="fullPage"
+  ></loading>
+  <Header></Header>
   <Menu></Menu>
   <div class="page-wrapper">
     <div class="container-fluid position-relative">
@@ -12,58 +14,60 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span v-if="user !== null">listes des operations de {{user.nom}} {{user.prenoms}}</span></li>
+              <li class="fw-bold h3"><span> Mes operations</span></li>
             </ol>
           </div>
         </div>
       </div>
-       <div class="icon">
+      <!-- <div class="icon">
         <a href="javascript:void(0)" class="back h4" @click="$router.go(-1)"
           ><box-icon name="left-arrow-alt" animation="tada"></box-icon
         >Utilisateur</a>
-      </div>
+      </div> -->
     </div>
 
     <div class="row container">
       <div class="col-md-12">
-      <div class="user" v-if="user !== null">
-          <span> <b class="fw-bold">Nom</b> : <input type="text" v-model="user.nom" disabled></span> <br />
-          <span><b class="fw-bold">prenoms</b> : <input type="text" v-model="user.prenoms" disabled></span>
+        <!-- <div class="user" v-if="user !== null">
+          <span> <b class="fw-bold">Nom</b> : {{ user.nom }}</span> <br />
+          <span><b class="fw-bold">prenoms</b> : {{ user.prenoms }}</span>
           <br />
-          <span><b class="fw-bold">email</b> : <input type="text" v-model="user.email" disabled></span
+          <span><b class="fw-bold">email</b> : {{ user.email }}</span
           ><br />
-          <span><b class="fw-bold">Télephone</b> : <input type="text" v-model="user.phone" disabled></span> <br>
-          <span><b class="fw-bold">Solde</b> : <input type="text" v-model="solde" disabled></span>
-        </div>
-        <div class="table-responsive"  >
+          <span><b class="fw-bold">Télephone</b> : {{ user.phone }}</span>
+        </div> -->
+        <div class="table-responsive">
           <table
             id="MyTableData"
-            class="table" v-if="this.list_operations !== null" >
-            <thead >
+            class="table"
+          >
+            <thead>
               <tr>
                 <th class="bg-light">#</th>
                 <th class="bg-light">Type de l'opération</th>
-                 <th class="bg-light">Le montant</th>
-                 <th class="bg-light">Date de l'operation</th>
+                <th class="bg-light">Le montant</th>
+                <th class="bg-light">Date de l'operation</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in this.list_operations" :key="index">
+              <tr v-for="(item, index) in this.list_operations" :key="index">
                 <td>
-                {{ index+1 }}
+                  {{ index + 1 }}
                 </td>
-                <td>{{item.type}}</td>
-                <td>{{moneyFormat.format(item.amount)}} Fcfa</td>
-                 <td>{{new Date(item.created_at).toLocaleDateString('fr')}}</td>
+                <td>{{ item.type }}</td>
+                <td>{{ moneyFormat.format(item.amount) }} Fcfa</td>
+                <td>
+                  {{ new Date(item.created_at).toLocaleDateString("fr") }}
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    </div>
+  </div>
 
-<Footer class="my_footer"></Footer>
+  <Footer class="my_footer"></Footer>
 </template>
 <script>
 // import Swal from "sweetalert2";
@@ -73,49 +77,45 @@ import Footer from "@/components/footer";
 import axios from "axios";
 import { lien } from "/src/assets/api.js";
 import $ from "jquery";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 export default {
   name: "userOperation",
-  data(){
-      return {
-          list_operations:null,
-          isLoading:false,
-           moneyFormat : new Intl.NumberFormat("de-DE"),
-           user:null,
-           solde:null,
-      }
+  data() {
+    return {
+      list_operations: null,
+      isLoading: false,
+      moneyFormat: new Intl.NumberFormat("de-DE"),
+      user: null,
+    };
   },
   components: {
     Header,
     Menu,
     Footer,
-    Loading
+    Loading,
   },
-  methods:{
-   getUser(){
-   axios
-      .get( lien+"/api/users")
-      .then((res) => {
-        console.log("OBTENIRPACKAGES", res);
-        this.list_user = res.data.data;
-        this.user = this.list_user.find(item=>item.id == this.$route.params.id)
-        this.solde = `${this.moneyFormat.format(this.user.solde)} Fcfa`
-        console.log("LIST", this.list_user);
-        console.log("USER",this.user);
-
-      });
-}
+  methods: {
+    //    getUser(){
+    //    axios
+    //       .get(lien+"users")
+    //       .then((res) => {
+    //         console.log("OBTENIRPACKAGES", res);
+    //         this.list_user = res.data.data;
+    //         this.user = this.list_user.find(item=>item.id == this.$route.params.id)
+    //         console.log("LIST", this.list_user);
+    //         console.log("USER",this.user);
+    //       });
+    // }
   },
-  created(){
-      this.isLoading = true;
-      axios.get(lien+"/api/opes/"+this.$route.params.id)
-      .then((res) => {
-      console.log("OBTENIRTYPESPACKAGES", res);
-      this.list_operations=res.data.data;
-      console.log("LISTTYPES", this.list_operations);
+  created() {
+    this.isLoading = true;
+    axios.get(lien + "/api/fournisseur_ops/" + this.$route.params.id).then((res) => {
+      console.log("OPERATIONS", res);
+      this.list_operations = res.data.data;
+      console.log("LISTOPERATIONS", this.list_operations);
       this.isLoading = false;
       setTimeout(function () {
         $("#MyTableData").DataTable({
@@ -150,38 +150,35 @@ export default {
           },
         });
       }, 10);
-    })
-    this.getUser()
-
-    },
-  
-  }
-
+    });
+  },
+};
 </script>
 <style scoped>
-.my_footer{
-position: relative !important;
-bottom:-39em;
+.my_footer {
+  position: relative !important;
+  bottom: -39em;
 }
 .icon {
   position: absolute;
   left: 1em;
   top: 0;
 }
-.table{
-border:thin solid rgba(139, 139, 139, 0.63) !important;
+.table {
+  border: thin solid rgba(139, 139, 139, 0.63) !important;
 }
-th,td{
- border:thin solid rgba(141, 140, 140, 0.692) !important;
+th,
+td {
+  border: thin solid rgba(141, 140, 140, 0.692) !important;
 }
 .user {
   text-align: left;
 }
-input,select{ 
+input,
+select {
   border: 1px solid black !important;
 }
-.form-group{ 
+.form-group {
   text-align: left !important;
 }
-
 </style>

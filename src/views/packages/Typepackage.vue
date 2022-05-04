@@ -61,7 +61,7 @@ export default {
   },
   methods:{
     postType_Package(){
-    axios.post(lien+"types",{
+    axios.post(lien+"/api/types",{
         libelle : this.libelle
     })
     .then(reponse =>{

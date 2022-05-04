@@ -12,15 +12,15 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span>Modifier</span></li>
+              <li class="fw-bold h3"><span v-if="utilisateur !== null">Modifier les informations de : <input type="text" v-model="utilisateur.nom"></span></li>
             </ol>
           </div>
         </div>
       </div>
       <div class="icon">
-        <a href="javascript:void(0)" class="back h1" @click="$router.go(-1)"
+        <a href="javascript:void(0)" class="back h4" @click="$router.go(-1)"
           ><box-icon name="left-arrow-alt" animation="tada"></box-icon
-        ></a>
+        >Utilisateur</a>
       </div>
     </div>
     
@@ -100,32 +100,44 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="form-label">Assigner un role</label>
-                <select class="w-100 form-group" v-model="this.role_id" id="role">
+                <select class="w-100 form-control" v-model="profile" id="role" multiple>
                   <option value="" disabled>ROLE</option>
                   <option
                     v-for="role in listRole"
                     :key="role.id"
                     :value="role.id"
+                     @change="emptyTable($event)"
                   >
-                    {{ role.libelle }}
+                    {{role.libelle}}
                   </option>
                 </select>
-                <!-- <input type="text" class="form-control" placeholder="ex:30000" v-model="utilisateur.solde"/> -->
+                <!-- <span v-for="item in prof" :key="item" class="badge bg-info mx-1">{{item}}</span> -->
               </div>
             </div>
-            <!--/span-->
           </div>
+           <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Mot de Passe</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="ex:******"
+                  v-model="password"
+                />
+              </div>
+            </div>
+           
         </div>
       </div>
      <div class="mb-4">
-      <button :disabled="role_id == null" type="submit" class="btn btn-modify">
+      <button type="submit" class="btn btn-modify">
         Modifier
       </button>
       <button @click="$router.go(-1)" type="button" class="btn btn-dark mx-2">Annuler</button>
      </div>
     </form>
   </div>
-   <Footer class="my_footer"></Footer>
+   <Footer class="my_footer" v-if="utilisateur"></Footer>
 </template>
 <script>
 import Swal from "sweetalert2";
@@ -150,14 +162,18 @@ export default {
       user_id: this.$route.params.id,
       role_id: null,
       listRole: null,
+      password:null,
       utilisateur:null,
+      profile:[],
+      profil:null,
+      prof:[],
         userCompte:{
         nom:null,
         prenoms:null,
         email:null,
         phone:null,
         lieu_habitation:null,
-        role_id:null
+        role_id:null,
       },
     };
   },
@@ -171,17 +187,22 @@ export default {
   //++++ METHODS ++++//
 
   methods: {
+    emptyTable(event) {
+      this.profile.push(event);
+    },
      modify_profil_user(){
-        let value = document.getElementById("role").value;
+       console.log("PROFIL",this.profile);
+        // let value = document.getElementById("role").value;
              this.userCompte.nom = this.utilisateur.nom ,
          this.userCompte.prenoms = this.utilisateur.prenoms,
         this.userCompte.phone = this.utilisateur.phone ,
         this.userCompte.email = this.utilisateur.email ,
          this.userCompte.lieu_habitation = this.utilisateur.lieu_habitation,
-         this.userCompte.role_id = value
+         this.userCompte.role_id = this.profile,
+         this.userCompte.password = this.password
          console.log('USER',this.$route.params.id);
 
-       axios.put(lien+`users/${this.$route.params.id}`,this.userCompte,{
+       axios.put(lien+`/api/users/${this.$route.params.id}`,this.userCompte,{
          headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}
        })
        .then(reponse=>{
@@ -198,7 +219,7 @@ export default {
         }
         if(reponse.data.status == 'false'){
             Swal.fire({
-              text:"Modification echouée",
+              text:"l'utilisateur à déja un des roles choisis",
               icon: 'error',
               showConfirmButton: false,
               timer: 1500,
@@ -217,37 +238,36 @@ export default {
             });
        })
     },
-    // post_role() {
-    //   let value = document.getElementById("role").value;
-    //   axios
-    //     .post(lien + "user_roles", {
-    //       role_id: value,
-    //       user_id: this.$route.params.id,
-    //     })
-    //     .then((reponse) => {
-    //       console.log("POSTER_ROLE", reponse);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
+    getValue(){
+      console.log(this.role_id);
+    },
     get_info_user(){
       this.isLoading = true
-       axios.get(lien+"users")
+       axios.get(lien+"/api/users")
             .then(reponse=>{
                console.log("LES USERS",reponse.data.data);
                this.list_users = reponse.data.data
                this.utilisateur = this.list_users.find(item => item.id == this.$route.params.id)
+               this.profil = this.utilisateur.role
+               this.profil.forEach((prof) => {
+              this.profile.push(prof.id);
+            })
+              //  for (let index = 0; index < this.profil .length; index++) {
+              //    const element = this.profil [index];
+              //    this.prof.push(element.libelle)
+              //  }
                console.log("utilisateur",this.utilisateur);
+                console.log("Profil",this.prof);
                this.isLoading = false
             })
     },
     get_role(){
       this.isLoading = true
-  axios.get(lien+"roles")
+  axios.get(lien+"/api/roles")
       .then((reponse) => {
         console.log("ROLES:", reponse.data.data);
         this.listRole = reponse.data.data;
+        
         this.isLoading = false
       })
       .catch((error) => {
@@ -265,7 +285,6 @@ export default {
 }
 select {
   padding: 0.589em !important;
-  border: none !important;
   border-radius: 0.25rem;
 }
 select:active {
@@ -281,5 +300,14 @@ position:relative;
 width:100%;
 bottom:-7em;
 margin-left: 0 !important;
+}
+input,select{ 
+  border: 1px solid black !important;
+}
+.form-group{ 
+  text-align: left !important;
+}
+label{
+  font-weight: bold;
 }
 </style>

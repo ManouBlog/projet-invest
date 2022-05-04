@@ -25,13 +25,13 @@
           <table id="MyTableData" class="table">
             <thead>
               <tr>
-                <th class="bg-light">Numero</th>
+                <th class="bg-light">#</th>
                 <th class="bg-light">Nom</th>
                 <th class="bg-light">Prénoms</th>
                 <th class="bg-light">Lieu d'habitation</th>
                 <th class="bg-light">email</th>
                 <th class="bg-light">Role</th>
-                <th class="bg-light text-right">Actions</th>
+                <th class="bg-light text-right">Détails</th>
               </tr>
             </thead>
             <tbody>
@@ -49,18 +49,21 @@
                   {{ item.lieu_habitation }}
                 </td>
                 <td>{{ item.email }}</td>
-                <td>
-                <span class="badge bg-danger1 bg-gradient" v-if="item.role.length > 0">{{item.role[0].libelle}}</span>
+                <td v-if="item.role.length > 0 && item.role !== null">
+                <span class="badge bg-danger1 bg-gradient d-block w-75 mb-1 mx-auto" v-for="item in item.role" :key="item.id"  >
+                <b v-if="item.role !== null">
+                 {{item.libelle}}</b>
+                </span>
                 </td>
                 <td class="text-right">
                   <div class="dropdown dropdown-action d-flex justify-content-center flex-wrap">
-                      <router-link title="Voir les operations" :to="{name:'userOperation',params:{id:item.id}}" class="btn  m-1 bg-pen text-light">
+                      <router-link data-title="Voir les operations utilisateur" :to="{name:'userOperation',params:{id:item.id}}" class="btn boutons  m-1 bg-pen text-light">
                       <i class="bi bi-eye"></i>
                     </router-link>
-                    <router-link title="Modifier l' utilisateur" :to="{name:'AssignerRole',params:{id:item.id}}" class="btn m-1 bg-pen text-light">
+                    <router-link data-title="Modifier l' utilisateur" :to="{name:'AssignerRole',params:{id:item.id}}" class="btn boutons  m-1 bg-pen text-light">
                        <i class="bi bi-pencil-fill"></i>
                     </router-link>
-                    <button @click="show(item.id)" title="Supprimer l' utilisateur" class="btn btn-lg m-1 bg-danger text-light">
+                    <button @click="show(item.id)" class="btn btn-lg m-1 boutons  bg-danger text-light">
                       <i class="bi bi-trash3-fill"></i>
                     </button>
                   </div>
@@ -105,14 +108,14 @@ export default {
       list_user: null,
       isLoading:false,
       showMsg:false,
-      id_delete:false,
+      id_delete:null,
     };
   },
   //++++ CREATED ++++//
   created() {
     this.isLoading = true;
     axios
-      .get( lien+"users")
+      .get( lien+"/api/users")
 
       .then((res) => {
         console.log("OBTENIRPACKAGES", res);
@@ -169,7 +172,7 @@ export default {
           console.log("ID A DELETE",this.id_delete);
        },
     delete_user(){
-      axios.delete(lien+`users/${this.id_delete}`)
+      axios.delete(lien+`/api/users/${this.id_delete}`)
       .then(reponse =>{
         console.log(reponse);
         if(reponse.data.status == 'true'){
@@ -180,7 +183,10 @@ export default {
               timer: 1500,
               timerProgressBar: true,
             });
-            window.location.reload(true)
+            this.showMsg = false
+           setTimeout(()=>{
+              window.location.reload(true)
+           },1500)
         }
          if(reponse.data.status == 'false'){
             Swal.fire({
@@ -190,6 +196,17 @@ export default {
               timer: 1500,
               timerProgressBar: true,
             });
+            this.showMsg = false
+        }
+           if(reponse.data.status !== 'false' && reponse.data.status !== 'true'  ){
+            Swal.fire({
+              text:"impossible de supprimer l'utilisateur car il a deja effectué une operation",
+              icon: 'info',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+            });
+            this.showMsg = false
         }
       })
       .catch(error=>{
@@ -210,6 +227,15 @@ export default {
 </script>
 
 <style scoped>
+a:hover::after{
+content:attr(data-title);
+position:absolute;
+top:30px;
+left:0;
+background: #000;
+font-size:.6em;
+padding:.5em 1em !important;
+}
 
 .delete_personne{
 position:fixed;
@@ -255,16 +281,22 @@ th,td{
 }
 .bg-pen{
 background: rgb(231, 202, 15) !important;
-border:3px solid black !important;
+border:1px solid black !important;
 
 }
 .bg-danger{
 background: crimson !important;
-border:3px solid black !important;
-
+border:1px solid black !important;
 }
 .bg-danger1{
 background: rgba(220, 20, 60, 0.745) !important;
+}
+.boutons{
+width:25px !important;
+height:25px !important;
+display: flex;
+place-items: center;
+justify-content: center;
 }
 
 </style>

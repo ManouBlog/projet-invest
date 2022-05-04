@@ -1,62 +1,71 @@
 <template>
- <loading :active="isLoading" 
+   <loading :active="isLoading" 
         :can-cancel="true" 
         :on-cancel="onCancel"
         :is-full-page="fullPage"></loading>
     <Header></Header>
   <Menu></Menu>
-  <div class="page-wrapper">
+   <div class="page-wrapper">
     <div class="container-fluid position-relative">
       <div class="row page-titles">
         <div class="col-md-5 align-self-center"></div>
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span>détail de vente</span></li>
+              <li class="fw-bold h3"><span>Liste des investisseurs</span></li>
             </ol>
           </div>
         </div>
       </div>
-      <div class="icon">
-        <a href="javascript:void(0)" class="back h1" @click="$router.go(-1)"
-          ><box-icon name="left-arrow-alt" animation="tada"></box-icon
-        ></a>
-      </div>
+     
     </div>
 
-     <div class="row container-fluid">
+    <div class="row container-fluid">
       <div class="col-md-12">
         <div>
           <table id="MyTableData" class="table">
             <thead>
               <tr>
               <th class="bg-light">#</th>
-                <th class="bg-light">Nombre de pièces vendus</th>
-                <!-- <th class="bg-light">Nom du package</th> -->
-                <th class="bg-light">Prix d'achat par pièce</th>
-                <th class="bg-light">Prix de vente par pièces</th>
-                <th class="bg-light">Gain total de pièces vendus</th>
+                <th class="bg-light">Nom</th>
+                <th class="bg-light">prénoms</th>
+                <th class="bg-light">Email</th>
+                <th class="bg-light">lieu d'habitation</th>
+                <th class="bg-light text-right">Télephone</th>
+                 <th class="bg-light text-right">Solde sur compte</th>
+                 <th class="bg-light text-right">Détails</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in details" :key="index">
+              <tr v-for="(item,index) in listInvestisseurs" :key="index">
                 <td>
                   {{index+1}}
                 </td>
                 <td>
-                  {{ item.produits_vendus}}
+                  {{ item.nom}}
                 </td>
-                 <!-- <td>
-                  {{ item.package.libelle}}
-                </td> -->
+                <td>
+                  {{ item.prenoms}}
+                </td>
+                <td>
+                  {{ item.email}}
+                </td>
                  <td>
-                  {{ moneyFormat.format(item.package.cout_acquisition)}} Fcfa
+                  {{ item.lieu_habitation}}
+                </td>
+                 <td>
+                  {{ item.phone}}
                 </td>
                 <td>
-                  {{ moneyFormat.format(item.package.cout_vente)}} Fcfa
+                  {{ moneyFormat.format(item.solde) }} Fcfa
                 </td>
-                <td>
-                  {{ moneyFormat.format(item.cout)}} Fcfa
+                <td class="text-right">
+                  <div class="dropdown dropdown-action d-flex justify-content-center flex-wrap">
+                    <router-link  :to="{name:'gainInvestisseur',params:{id:item.id}}" data-title="voir gain investisseur"  class="btn m-1 boutons bg-pen text-light">
+                       <i class="bi bi-eye"></i>
+                    </router-link>
+                   
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -66,12 +75,8 @@
     </div>
 
 
-
-
-
      </div>
-<Footer class="my_footer"></Footer>
-
+     <Footer class="my_footer"></Footer>
 </template>
 <script>
 import { lien } from "/src/assets/api.js";
@@ -85,22 +90,25 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
-    name:"detailsVentes",
-    components: {
-     Header,Menu,Footer,Loading
-    },
+    name:"listInvestisseurs",
     data() {
-        return{ 
-           details:null,
+        return{
+           listInvestisseurs: null,
            moneyFormat : new Intl.NumberFormat("de-DE")
         }
     },
+    components: {
+     Header,Menu,Footer,Loading
+    },
+
      created() {
     this.isLoading = true;
- axios.get(lien+"/api/sells/"+this.$route.params.id)
+    axios
+      .get( lien+"/api/investisseurs")
       .then((res) => {
-          this.details = res.data.data
-        console.log("LISTVENTES", this.details);
+        console.log("investisseurs", res);
+        this.listInvestisseurs = res.data.data;
+        console.log("LISTinvestisseurs", this.listInvestisseurs);
         this.isLoading = false
         setTimeout(function () {
           $("#MyTableData").DataTable({
@@ -137,13 +145,28 @@ export default {
         }, 10);
       });
   },
+  
 }
 </script>
 <style scoped>
-.icon {
-  position: absolute;
-  left: 1em;
-  top: 0;
+a:hover::after{
+content:attr(data-title);
+position:absolute;
+top:30px;
+left:0;
+background: #000;
+font-size:.6em;
+padding:.5em 1em !important;
+}
+.bg-pen{
+background: rgb(231, 202, 15) !important;
+border:1px solid black !important;
+
+}
+.bg-danger{
+background: crimson !important;
+border:1px solid black !important;
+
 }
 .table{
 border:thin solid rgba(139, 139, 139, 0.63) !important;
@@ -158,4 +181,5 @@ width:100%;
 bottom:-30em;
 margin-left: 0 !important;
 }
+
 </style>

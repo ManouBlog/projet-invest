@@ -1,149 +1,229 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 // import authentification from '../views/authentification.vue'
 // import dashboard from '../views/dashboard.vue'
 import Home from "../views/Home.vue";
 import Dashboard from "../views/dashboard.vue";
 import Package from "../views/packages/package.vue";
-
+// import store from  '@/store'
 const routes = [
+  {
+    path: "/:patchMatch(.*)*",
+    name: "NotFound",
+    component: () =>
+      import(
+         "../views/notfound.vue"
+      ),
+  },
   {
     path: "/",
     name: "Home",
     component: Home,
+    meta: { requiresAuth:false}
   },
   {
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+    meta: { requiresAuth: true }
   },
-  // {
-  //   path: '/dasboard',
-  //   name: "Dashboard",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/dashboard.vue')
-  // },
-
+ 
   //====== PACKAGES ==========//
   {
     path: "/package",
     name: "Package",
     component: Package,
+    meta: {
+      requiresAuth: true,
+    }
   },
-  // },{
-  //   path: '/typePackage',
-  //   name: 'Typepackage',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/packages/Typepackage.vue')
-  // },
+  
   {
     path: "/seepackage",
     name: "Seepackage",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/packages/Seepackage.vue"
+         "../views/packages/Seepackage.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
+  },
+  {
+    path: "/operations/:id",
+    name: "operations",
+    
+    component: () =>
+      import(
+         "../views/fournisseurs/operations.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
+  },
+  {
+    path: "/solde",
+    name: "solde",
+    
+    component: () =>
+      import(
+         "../views/fournisseurs/solde.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/voirpackages",
     name: "voirpackages",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/packages/voirPackages.vue"
+         "../views/packages/voirPackages.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
+  },
+  {
+    path: "/voirpackagesnotpublish",
+    name: "Voirpackagesnotpublish",
+    
+    component: () =>
+      import(
+         "../views/packages/packagesnotpublish.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
+  },
+  {
+    path: "/voirpackagespublish",
+    name: "Voirpackagespublish",
+    
+    component: () =>
+      import(
+         "../views/packages/packagespublish.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/types-packages-utilise",
     name: "voirLesTypesDePackagesUsed",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/packages/seePackagesUsed.vue"
+   "../views/packages/seePackagesUsed.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/modify_package/:id",
     name: "ModiyPackage",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/packages/Modifypackage.vue"
+        "../views/packages/Modifypackage.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/modifier-package/:id",
     name: "ModifierPackage",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/packages/ModifierPackage.vue"
+        "../views/packages/ModifierPackage.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
+  },{
+    path: "/packages-souscription",
+    name: "PackageSouscris",
+    component: () =>
+      import(
+        "../views/packages/MesPackageSouscris.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
+  },{
+    path: "/articles-rejetes",
+    name: "ArticlesRejete",
+    component: () =>
+      import(
+        "../views/packages/ArticlesRejete.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
   },
 
 
   {
     path: "/users",
     name: "User",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/user/users.vue"),
+      import( "../views/user/users.vue"),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/listusers",
     name: "listUsers",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/user/listusers.vue"),
+      import( "../views/user/listusers.vue"),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/users-operations/:id",
     name: "userOperation",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/user/usersOperation.vue"),
+      import( "../views/user/usersOperation.vue"),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/assignerRole/:id",
     name: "AssignerRole",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/user/Assignerrole.vue"),
+      import( "../views/user/Assignerrole.vue"),
+      meta: {
+        requiresAuth: true
+      },
   },
+  // {
+  //   path: "/role",
+  //   name: "giveRole",
+  //   component: () =>
+  //     import( "../views/user/donner-role.vue"),
+  //     meta: {
+  //       requiresAuth: true
+  //     },
+  // },
 
   //====== FOURNISSEURS ==========//
   {
     path: "/fournisseurs",
     name: "Fournisseurs",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/fournisseurs/fournisseurs.vue"
+        "../views/fournisseurs/fournisseurs.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/fournisseurs/:id",
@@ -152,6 +232,9 @@ const routes = [
       import(
         "../views/fournisseurs/package-fournisseurs.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/gain-fournisseurs/:id",
@@ -160,30 +243,70 @@ const routes = [
       import(
         "../views/fournisseurs/GainFournisseurs.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
+  },
+  {
+    path: "/voirMesPackage",
+    name: "VoirMesPackage",
+    component: () =>
+      import(
+        "../views/packages/voirpackagefournisseurs.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
+      
+  },
+  {
+    path: "/detailsPackage/:id",
+    name: "DetailsPackage",
+    component: () =>
+      import(
+        "../views/packages/DetailsPackages.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
+      
+  },
+  {
+    path: "/PackageRejecter/:id",
+    name: "ModifierPackageRejete",
+    component: () =>
+      import(
+        "../views/packages/ModifierPackageRejete.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
+      
   },
 
   //====== SOUSCRIPTION ==========//
   {
     path: "/souscription",
     name: "list_souscrit",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+   
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/souscription/listSouscription.vue"
+         "../views/souscription/listSouscription.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/souscription/:id",
     name: "modifier-souscription",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/souscription/modifySouscription.vue"
+         "../views/souscription/modifySouscription.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
   },
 
 
@@ -195,45 +318,105 @@ const routes = [
   {
     path: "/list-rapport-ventes",
     name: "listVente",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    
+
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/ventes/listVentes.vue"
+         "../views/ventes/listVentes.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/saveRapportventes",
     name: "saveRapportVentes",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/ventes/saveRapportVentes.vue"
+         "../views/ventes/saveRapportVentes.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
   },
   {
     path: "/details-Ventes/:id",
     name: "detailsVentes",
+    
     props:true,
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "../views/ventes/detailsVentes.vue"
+         "../views/ventes/detailsVentes.vue"
       ),
+      meta: {
+        requiresAuth: true
+      },
   },
 
+  //====== Investisseurs =====//
+  {
+    path: "/investisseurs",
+    name: "investisseurs",
+    
+    props:true,
+
+    component: () =>
+      import(
+         "../views/investisseurs/listInvestisseurs.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
+  },
+  {
+    path: "/gain-investisseur/:id",
+    name: "gainInvestisseur",
+    
+    props:true,
+
+    component: () =>
+      import(
+         "../views/investisseurs/gainInvestisseur.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
+  }, {
+    path: "/gain-rapport/:id",
+    name: "detailRapportGain",
+    component: () =>
+      import(
+         "../views/investisseurs/detailRapportGain.vue"
+      ),
+      meta: {
+        requiresAuth: true
+      },
+  },
+ 
 
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   mode:"history",
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  if(to.meta.requiresAuth){
+    let session = localStorage.getItem('token')
+    if(session === null){
+      next({path:'/'})
+    }
+    if(session !== null){
+      next()
+    }
+  }else{
+     next()
+  }
+})
+
 
 export default router;

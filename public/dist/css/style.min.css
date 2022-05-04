@@ -14215,7 +14215,7 @@
   -ms-filter: FlipV;
 }
 .skin-default .topbar {
-  background: #4f5467;
+  background: #000000;
 }
 .skin-green .topbar {
   background: #00c292;
@@ -35712,7 +35712,7 @@ a.list-group-item {
 }
 .app-search .form-control {
   border-radius: 60px;
-  border-color: transparent;
+  border-color: white;
   transition: 0.2s ease-in;
   width: 180px;
 }
@@ -37058,7 +37058,7 @@ ul.list-inline li {
   background: #fff;
   padding: 14px 10px;
   box-shadow: 1px 0 20px rgba(0, 0, 0, 0.08);
-  margin: 0 -25px 25px -25px;
+  margin: -15px -25px 25px -25px;
 }
 .page-titles .h4,
 .page-titles h4 {
@@ -38384,3 +38384,18 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
     overflow: hidden;
   }
 }
+.a.goog-logo-link,.goog-logo-link:link{
+  opacity:0 !important;
+  }
+  .goog-te-combo {
+  background: white !important;
+  color: black !important;
+  border-radius: 60px;
+  border-color: white;
+  transition: 0.2s ease-in;
+  width: 180px;
+  min-height: 38px !important;
+  margin-top:1.3em !important;
+  margin-left:1.4em !important;
+}
+

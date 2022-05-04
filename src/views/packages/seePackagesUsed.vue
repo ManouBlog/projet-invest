@@ -12,7 +12,7 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span>Types de Packages les plus utilisées</span></li>
+              <li class="fw-bold h3"><span>Packages</span></li>
             </ol>
           </div>
         </div>
@@ -26,18 +26,14 @@
             class="table">
             <thead >
               <tr>
-                <th class="bg-light">Numero</th>
-                <th class="bg-light">Nom du Type de Package</th>
-                 <th class="bg-light">Le nombre de fois Utilisé</th>
+                <th class="bg-light">Nom du package</th>
+                 <th class="bg-light">Quantité</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="[key, value] of Object.entries(this.listTypesPackages)" :key="key">
-                <td>
-                {{ index+1 }}
-                </td>
-                <td>{{key}}</td>
-                <td>{{value}}</td>
+                <td v-if="key !== null">{{key}}</td>
+                <td v-if="key !== null">{{value}}</td>
               </tr>
             </tbody>
           </table>
@@ -79,7 +75,11 @@ export default {
     methods: {
          getData(){
       this.isLoading = true;
-      axios.get(lien+"populars")
+      axios.get(lien+"/api/populars",{
+        headers: {
+            'Authorization':"Bearer "+this.$store.state.token,
+          },
+      })
       .then((res) => {
       console.log("OBTENIRTYPESPACKAGES", res);
       this.listTypesPackages = res.data.data;
@@ -131,7 +131,7 @@ export default {
 .my_footer{
 position:relative;
 width:100%;
-bottom:-31em;
+bottom:-18em;
 margin-left: 0 !important;
 }
 .table{
