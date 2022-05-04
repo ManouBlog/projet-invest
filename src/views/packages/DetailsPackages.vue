@@ -42,7 +42,7 @@
                    <span class="visually-hidden">Loading...</span>
                   </div> -->
                 <!-- <div v-if="Detailpackages.photo === null"></div> -->
-                  <img v-if="this.Detailpackages.photo" class="w-25" :src="lien+Detailpackages.photo" :alt="Detailpackages.libelle">
+                  <img v-if="this.Detailpackages.photo" class="w-25" :src="'http://192.168.1.9:8000'+Detailpackages.photo" :alt="Detailpackages.libelle">
                   <img v-else src="#" alt="Pas d'image">
                 </td>
                 <td v-if="this.Detailpackages.package.length > 0">

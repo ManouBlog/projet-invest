@@ -50,7 +50,7 @@
                   required
                   accept="image/png,image/jpeg"
                 />
-                 <img v-show="showImg" class="img-package position-absolute" :src="lien+libelle.photo" :alt="libelle.libelle">
+                 <img v-show="showImg" class="img-package position-absolute" :src="'http://192.168.1.9:8000'+libelle.photo" :alt="libelle.libelle">
               
                 </div>
               </div>

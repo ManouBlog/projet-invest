@@ -156,13 +156,13 @@
                   class="dropdown-item profil"
                   v-if="showcreatedPackage"
                 >
-                  <box-icon type="solid" name="face"></box-icon> Mes operations
+                 <box-icon name='wallet' ></box-icon>Mes operations
                 </router-link>
                 <router-link to="/solde"
                   class="dropdown-item profil"
                   v-if="showcreatedPackage"
                 >
-                  <box-icon type="solid" name="face"></box-icon>Solde
+                  <box-icon name='credit-card'></box-icon>Solde
                 </router-link>
                       
                 <a

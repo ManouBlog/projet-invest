@@ -38,7 +38,7 @@
                   <button
                     class="btn btn-warning bouton_connecte btn-lg w-100 btn-rounded text-uppercase text-dark"
                     type="submit"
-                  >
+                  > <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" v-show="tour"></span>
                     se connecter
                   </button>
                 </div>
@@ -61,10 +61,12 @@ export default {
    return {
        email:null,
        password:null,
+       tour:false,
    }
  },
  methods: {
    Connecter(){
+     
      axios.post(lien+"/api/auth/loginByAdmin",{
        email:this.email,
        password:this.password,
@@ -81,7 +83,13 @@ export default {
         //  this.$router.push('/dashboard')
          this.$store.state.user = reponse.data.user
          this.$store.state.token = reponse.data.access_token
-        window.location.href='/dashboard'
+         if(reponse.data.user && reponse.data.access_token){
+           this.tour = !this.tour
+           setTimeout(() =>{
+           window.location.href='/dashboard'
+           },1000)
+         }
+      
     
      })
      .catch(error=>{

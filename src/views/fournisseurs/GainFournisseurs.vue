@@ -12,7 +12,7 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span v-if="user !== null">Gain de {{user.nom}} {{user.prenoms}}</span></li>
+              <li class="fw-bold h3"><span v-if="user !== null">Gain de :<input type="text" v-model="user.nom" disabled></span></li>
             </ol>
           </div>
         </div>
@@ -33,7 +33,7 @@
        <span><b class="fw-bold">Télephone</b> : <input type="text" v-model="user.phone" disabled></span> <br>
        <span><b class="fw-bold">Solde</b> : <input type="text" v-model="money" disabled></span> <br>
         <span v-if="user.registre_commerce"><b class="fw-bold">Registre de commerce</b> : <input type="text" v-model="user.registre_commerce" disabled></span>
-         <span v-else><b class="fw-bold">Registre de commerce</b> : le registre de commerce n'existe pas</span>
+         <span v-else><b class="fw-bold">Registre de commerce :</b> <input type="text" v-model="rgnot" disabled></span>
       </div>
         <div>
           <table id="MyTableData" class="table">
@@ -109,7 +109,8 @@ export default {
           isLoading:false,
           user:null,
           gainFournisseur:null,
-          money:null
+          money:null,
+          rgnot:'le registre n\'existe pas',
        }
    },
    methods: {
@@ -133,7 +134,7 @@ axios.get( lien+"/api/gains/"+this.$route.params.id)
         console.log("OBTENIR GAIN", res);
         this.packages = res.data.data
         this.gainFournisseur=res.data.gain
-        this.money = this.moneyFormat.format(this.gainFournisseur)
+        this.money = `${this.moneyFormat.format(this.gainFournisseur)} Fcfa`
         console.log("GAIN", this.packages);
         console.log("GAINFOUR", this.gainFournisseur);
         this.isLoading = false

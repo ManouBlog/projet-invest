@@ -21,8 +21,8 @@
          <h1  @click="$router.go(-1)"><box-icon name='left-arrow-alt' animation='tada'></box-icon></h1>
      </div>
     </div>
-   <h1 v-if="libelle !== null">Nom de l'article : {{libelle.libelle}}</h1>
-   <span  v-if="libelle !== null && libelle.commentaire_rejet" class="alert alert-danger w-100" role="alert">{{libelle.commentaire_rejet}}</span>
+   <h1 v-if="libelle !== null">Nom de l'article :<input type="text" class="w-25" v-model="libelle.libelle" disabled></h1>
+   <h5  v-if="libelle !== null && libelle.commentaire_rejet" class="alert alert-danger w-100 my-1" role="alert">{{libelle.commentaire_rejet}}</h5>
     <form  @submit.prevent="modify">
     <div class="form-body" v-if="listPackages">
       <div class="card-body">
@@ -257,11 +257,15 @@ methods:{
 //       }
 //    },
      modify(){
-       console.log("TYPE_ID",this.type_id);
-       console.log("USER_ID",this.user.id);
         axios.put(lien+`/api/packages/${this.$route.params.id}`,{
-           etat:this.libelle.etat,
-           commentaire:this.comment
+          cout_acquisition:this.libelle.cout_acquisition,
+          cout_vente:this.libelle.cout_vente,
+          nb_jours:this.libelle.nb_jours,
+          nb_products:this.libelle.nb_products,
+          libelle:this.libelle.libelle,
+          type_id:this.libelle.type.id,
+          user_id:this.user.id,
+          etat:'en cours de traitement',
         })
         .then(reponse =>{
         console.log("MODIFY DATA",reponse);
@@ -327,6 +331,9 @@ border-radius:.25rem;
 background: rgb(231, 202, 15) !important;
 border:3px solid black !important;
 font-weight: bold !important;
+}
+.w-25{
+  width:10% !important;
 }
 
 .my_footer{

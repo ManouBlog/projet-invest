@@ -222,9 +222,9 @@ td {
   border: 1px solid black !important;
 }
 .my_footer {
-  position: relative;
+  position: absolute;
   width: 100%;
-  bottom: -24em;
+  bottom:-5em;
   margin-left: 0 !important;
 }
 .boutons {

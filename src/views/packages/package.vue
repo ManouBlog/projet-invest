@@ -27,8 +27,9 @@
                   class="w-100 form-group types"
                   v-model="type_id"
                   id="type"
+                  required
                 >
-                  <option value="" disabled selected>Packages</option>
+                  <option value="" disabled>Packages</option>
                   <option
                     v-for="type in list_type_packages"
                     :key="type.id"
@@ -67,6 +68,7 @@
                   placeholder="ex:1200 fcfa"
                   v-model="cout_acquisition"
                   pattern="^([0-9]*)$"
+                  required
                 />
               </div>
             </div>
@@ -81,6 +83,7 @@
                   placeholder="ex:3000 fcfa"
                   v-model="cout_vente"
                   pattern="^([0-9]*)$"
+                  required
                 />
               </div>
             </div>
@@ -115,8 +118,8 @@
         <div class="form-actions">
           <div class="card-body">
             <button
-              type="submit"
               class="btn text-white mx-3 btn-envoyer"
+              type="submit"
             >
               envoyer
             </button>
@@ -165,7 +168,10 @@ export default {
   },
   methods: {
     create_article(){
-   if (this.cout_acquisition < this.cout_vente) {
+      let prixVente= this.cout_vente
+      let prixAchat = this.cout_acquisition
+        
+   if(prixVente < prixAchat || prixVente == prixAchat){
         Swal.fire({
           text: "Le prix de vente doit etre supérieur au prix d'achat",
           icon: "info",
@@ -173,8 +179,7 @@ export default {
           timer: 1500,
           timerProgressBar: true,
         });
-      }
-      if(this.cout_acquisition >= this.cout_vente){ 
+      }else{
         this.created_package()
       }
     },
@@ -192,7 +197,7 @@ export default {
           .post(lien + "/api/packages", {
             cout_acquisition: this.cout_acquisition,
             cout_vente: this.cout_vente,
-            libelle: `${this.libelle}`,
+            libelle: this.libelle,
             nb_products: this.nb_products,
             nb_jours: this.nb_jours,
             user_id: this.user.id,

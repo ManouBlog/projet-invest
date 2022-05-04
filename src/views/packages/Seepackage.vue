@@ -45,9 +45,9 @@
                 {{ index+1 }}
                 </td>
                 <td>{{ item.libelle }}</td>
-                 <td v-if="item.photo"><img class="w-25" :src="lien+item.photo" :alt="item.libelle"></td>
+                 <td v-if="item.photo"><img class="w-25" :src="'http://192.168.1.9:8000'+item.photo" :alt="item.libelle"></td>
                  <td v-else>
-                 <img src="#" alt="Pas d'image">
+                 <span>pas d image</span>
                  </td>
                  <td>{{new Date(item.created_at).toLocaleDateString('fr')}}</td>
                 <td class="text-right">

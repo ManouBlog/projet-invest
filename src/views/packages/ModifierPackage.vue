@@ -21,7 +21,7 @@
          <h1  @click="$router.go(-1)"><box-icon name='left-arrow-alt' animation='tada'></box-icon></h1>
      </div>
     </div>
-   <h1 v-if="libelle !== null">Nom de l'article : {{libelle.libelle}}</h1>
+   <h1 v-if="libelle !== null">Nom de l'article : <input type="text" v-model="libelle.libelle" disabled></h1>
     <form  @submit.prevent="modify">
     <div class="form-body" v-if="listPackages">
       <div class="card-body">
@@ -116,7 +116,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="form-group" v-if="libelle.sell.length >= 1">
+            <div class="form-group" v-if="libelle.sell.length == 0">
               <label class="form-label">Publication</label>
               <select @change="changePublication(libelle.etat)" v-model="libelle.etat" class="w-100 publie">
               <option value='en cours de traitement'>En cours de traitement</option>
@@ -230,7 +230,7 @@ methods:{
      modify(){
        console.log("TYPE_ID",this.type_id);
        console.log("USER_ID",this.user.id);
-        axios.put(lien+`/api/packages/${this.$route.params.id}`,{
+        axios.put(lien+`/api/edit/${this.$route.params.id}`,{
            etat:this.libelle.etat,
            commentaire:this.libelle.commentaire_rejet
         })

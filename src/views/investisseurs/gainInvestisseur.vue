@@ -33,13 +33,14 @@
     <div class="row container-fluid" v-if="gain !== null">
       <div class="col-md-12">
         <div class="user" v-if="user !== null">
-          <span> <b class="fw-bold">Nom</b> : {{ user.nom }}</span> <br />
-          <span><b class="fw-bold">prenoms</b> : {{ user.prenoms }}</span>
+          <span> <b class="fw-bold">Nom</b> : <input type="text" v-model="user.nom" disabled></span> <br/>
+          <span><b class="fw-bold">prenoms</b> : <input type="text" v-model="user.prenoms" disabled></span>
           <br />
-          <span><b class="fw-bold">email</b> : {{ user.email }}</span
+          <span><b class="fw-bold">email</b> : <input type="text" v-model="user.email" disabled></span
           ><br />
-          <span><b class="fw-bold">Télephone</b> : {{ user.phone }}</span> <br>
-           <span><b class="fw-bold">Solde Actuel</b> : {{moneyFormat.format( user.solde)}} Fcfa</span> <br>
+          <span><b class="fw-bold">Télephone</b> : <input type="text" v-model="user.phone" disabled></span> <br>
+           <span><b class="fw-bold">Solde Actuel</b> : <input type="text" v-model="currency" disabled></span> <br>
+            <span><b class="fw-bold">Registre</b> : <input type="text" v-model="user.registre_commerce" disabled></span>
         </div>
         <div>
           <table id="MyTableData" class="table">
@@ -160,6 +161,7 @@ export default {
       showRapport: false,
       libelle:null,
       benefice:null,
+      currency:null
     };
   },
   components: {
@@ -178,6 +180,7 @@ export default {
           this.user = res.data.data.find(
             (item) => item.id == this.$route.params.id
           );
+          this.currency = `${this.moneyFormat.format(this.user.solde)} Fcfa`
           console.log("User", this.user);
           this.isLoading = false;
         })

@@ -129,9 +129,9 @@ export default {
 </script>
 <style scoped>
 .my_footer{
-position:relative;
+position:absolute;
 width:100%;
-bottom:-18em;
+bottom:-2em;
 margin-left: 0 !important;
 }
 .table{

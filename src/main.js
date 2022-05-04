@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import 'boxicons'
+import "bootstrap-icons/font/bootstrap-icons.css"
 import axios from 'axios'
 
 import { faHatWizard,faCircleArrowDown } from '@fortawesome/free-solid-svg-icons'

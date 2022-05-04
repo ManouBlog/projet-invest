@@ -25,7 +25,7 @@
     <span class="fw-bold">Nom:</span> <input type="text" v-model="user.nom" disabled><br>
      <span class="fw-bold">Prénoms:</span> <input type="text" v-model="user.prenoms" disabled><br>
       <span class="fw-bold">Email:</span> <input type="text" v-model="user.email" disabled><br>
-       <span class="fw-bold">Solde:</span> <input type="text" v-model="user.solde" disabled> 
+       <span class="fw-bold">Solde:</span> <input type="text" v-model="currency" disabled> 
     </div>
     <div class="created_package mt-2">
     <button class="btn btn-lg bouton-create-type-package text-light fw-bold" @click="addPackage">Creer un article</button>
@@ -69,7 +69,7 @@
                 <td>
                   <span  v-if="item.etat == 'en cours de traitement'" class="badge bg-info bg-gradient">En cours de traitement</span>
                   <span v-if="item.etat == 'publie'" class=" badge bg-success bg-gradient">Publié</span>
-                  <span :data-title="item.commentaire_rejet" v-if="item.etat == 'rejete'" class="position-relative verif badge bg-danger bg-gradient"> Rejeter</span>
+                  <span  v-if="item.etat == 'rejete'" class="position-relative verif badge bg-danger bg-gradient"> Rejeter</span>
                 </td>
                 <td>{{ new Date(item.created_at).toLocaleDateString('fr') }}</td>
                 
@@ -121,10 +121,12 @@ export default {
   },
    data(){
        return{
-           user:this.$store.state.user,
+           user:null,
            packages:null,
            moneyFormat : new Intl.NumberFormat("de-DE"),
            isLoading:false,
+           currency:null,
+          
        }
    },
    methods: {
@@ -133,6 +135,8 @@ export default {
     },
    },
    created() {
+     this.user = this.$store.state.user
+     this.currency = `${this.moneyFormat.format(this.user.solde)} Fcfa`
     this.isLoading = true;
     axios.get(lien+"/api/fourn_package/"+this.user.id,
     { headers: {
@@ -211,17 +215,6 @@ border:2px solid black !important;
   background: rgb(231, 202, 15) !important;
   border: 1px solid black !important;
 }
-.verif:hover::after {
-  content: attr(data-title);
-  padding: 5px;
-  border: 1px solid #000;
-  position: absolute;
-  top: 30px;
-  right:-3em;
-  background: #000000;
-  color: white;
-  font-size: 1em;
-  cursor: pointer;
-}
+
 
 </style>

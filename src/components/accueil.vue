@@ -29,12 +29,13 @@
                         <p>ARTICLES</p>
                       </div>
                       <div class="ms-auto">
-                        <h2
-                          class="counter text-primary"
+                      <span class="badge bg-danger" v-show="newshow">new</span>
+                        <span
+                          class="counter text-primary h2"
                           v-if="this.nombrePackages !== null"
                         >
                           {{ nombrePackages }}
-                        </h2>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -143,6 +144,7 @@ export default {
     this.user = this.$store.state.user;
     this.getNombreFournisseur();
     this.get_Nombre();
+    
   },
   data() {
     return {
@@ -157,10 +159,12 @@ export default {
          responsive:true,
       },
       user: null,
+      newshow:false,
       isLoading: false,
       date_jour: new Date(),
       list_packages: null,
       nombrePackages: null,
+      newNombrePackage:null,
       nombreTypePackages: null,
       nombreFournisseurs: null,
       seeNombre: true,
@@ -227,8 +231,16 @@ export default {
         .then((res) => {
           console.log("OBTENIRPACKAGES", res.data.data);
           this.list_packages = res.data.data;
+          if(localStorage.getItem('nombre') < this.list_packages.length){
+            this.newshow = !this.newshow
+          }
           this.nombrePackages = this.list_packages.length;
+          localStorage.setItem('nombre',this.nombrePackages)
+           console.log("NOTIFICATION",this.newNombrePackage);
           this.isLoading = false;
+          setTimeout(() =>{
+            this.newshow = false
+          },5000)
         })
         .catch((err) => {
           console.log(err);
@@ -285,6 +297,9 @@ export default {
         });
     },
   },
+  // mouted() {
+  //   this.getNewNombrePackage();
+  // }
 };
 </script>
 <style scoped>

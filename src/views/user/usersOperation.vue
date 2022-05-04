@@ -12,7 +12,7 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span v-if="user !== null">listes des operations de {{user.nom}} {{user.prenoms}}</span></li>
+              <li class="fw-bold h3"><span v-if="user !== null">listes des operations de :<input type="text" v-model="user.nom" disabled></span></li>
             </ol>
           </div>
         </div>
