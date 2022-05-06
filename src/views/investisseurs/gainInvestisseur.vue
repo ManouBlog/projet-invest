@@ -16,8 +16,8 @@
             <ol class="breadcrumb justify-content-end">
               <li class="fw-bold h3">
                 <span v-if="user !== null"
-                  >Gain de <input type="text" v-model="user.nom" disabled></span
-                >
+                  >Gain de <input type="text" v-model="user.nom" disabled
+                /></span>
               </li>
             </ol>
           </div>
@@ -26,20 +26,103 @@
       <div class="icon">
         <a href="javascript:void(0)" class="back h4" @click="$router.go(-1)"
           ><box-icon name="left-arrow-alt" animation="tada"></box-icon
-        >Investisseur</a>
+          >Investisseur</a
+        >
       </div>
     </div>
 
     <div class="row container-fluid" v-if="gain !== null">
       <div class="col-md-12">
-        <div class="user" v-if="user !== null">
-          <span> <b class="fw-bold">Nom</b> : <input type="text" v-model="user.nom" disabled></span> <br/>
-          <span><b class="fw-bold">prenoms</b> : <input type="text" v-model="user.prenoms" disabled></span>
+        <div class="user row" v-if="user !== null">
+         <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Nom</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.nom"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">prenoms</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.prenoms"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">email</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.email"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Télephone</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.phone"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Registre de commerce</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.registre_commerce"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Solde</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="currency"
+                disabled
+              />
+            </div>
+          </div>
+          <!-- <span>
+            <b class="fw-bold">Nom</b> :
+            <input type="text" v-model="user.nom" disabled
+          /></span>
           <br />
-          <span><b class="fw-bold">email</b> : <input type="text" v-model="user.email" disabled></span
+          <span
+            ><b class="fw-bold">prenoms</b> :
+            <input type="text" v-model="user.prenoms" disabled
+          /></span>
+          <br />
+          <span
+            ><b class="fw-bold">email</b> :
+            <input type="text" v-model="user.email" disabled /></span
           ><br />
-          <span><b class="fw-bold">Télephone</b> : <input type="text" v-model="user.phone" disabled></span> <br>
-           <span><b class="fw-bold">Solde Actuel</b> : <input type="text" v-model="currency" disabled></span>
+          <span
+            ><b class="fw-bold">Télephone</b> :
+            <input type="text" v-model="user.phone" disabled
+          /></span>
+          <br />
+          <span
+            ><b class="fw-bold">Solde Actuel</b> :
+            <input type="text" v-model="currency" disabled
+          /></span> -->
         </div>
         <div>
           <table id="MyTableData" class="table">
@@ -72,7 +155,7 @@
           <tr>
             <th>#</th>
             <th>Nom de l'article</th>
-             <!-- <th>Prix d'achat par pièce</th> -->
+            <!-- <th>Prix d'achat par pièce</th> -->
             <th>prix d'achat du package</th>
             <th>Prix de vente du package</th>
             <!-- <th>Benefice sur package</th> -->
@@ -84,8 +167,15 @@
             <td>{{ index + 1 }}</td>
             <td>{{ item.libelle }}</td>
             <!-- <td>{{ moneyFormat.format(item.cout_acquisition) }} Fcfa</td> -->
-            <td>{{ moneyFormat.format(item.cout_acquisition*item.nb_products) }} Fcfa</td>
-            <td>{{ moneyFormat.format(item.nb_products * item.cout_vente) }} Fcfa</td>
+            <td>
+              {{
+                moneyFormat.format(item.cout_acquisition * item.nb_achetes)
+              }}
+              Fcfa
+            </td>
+            <td>
+              {{ moneyFormat.format(item.nb_products * item.cout_vente) }} Fcfa
+            </td>
             <!-- <td>{{ moneyFormat.format(item.gain_par_piece * item.nb_products) }} Fcfa</td> -->
             <td>
               <div
@@ -94,7 +184,7 @@
                 <button
                   class="btn boutons m-1 bg-pen text-light"
                   title="voir rapport gain"
-                  @click="getRapport(item.id,item.libelle)"
+                  @click="getRapport(item.id, item.libelle)"
                 >
                   <i class="bi bi-eye"></i>
                 </button>
@@ -104,35 +194,34 @@
         </tbody>
       </table>
     </div>
-    <div class="get_rapport " v-if="showRapport">
-     <div class="p-5 position-relative">
-     <h4>Journal de vente</h4>
-     <hr>
-     <i class="bi bi-x-circle position-absolute" @click="close_rapport"></i>
-     <h5 v-if="libelle !== null">Nom du package: {{libelle}}</h5>
-      <table class="table " v-if="gainRapport !== null">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nombre de pièces vendus</th>
-            <th>Montant recus</th>
-            <th>Date d'enregistrement</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in gainRapport" :key="index">
-            <td>{{ index + 1 }}</td>
-            <td>{{ item.produits_vendus }}</td>
-            <td>{{ moneyFormat.format(item.cout) }} Fcfa</td>
-            <td>{{ new Date(item.created_at).toLocaleDateString('fr') }}</td>
-          </tr>
-        </tbody>
-      </table>
-     </div>
-    
+    <div class="get_rapport" v-if="showRapport">
+      <div class="p-5 position-relative">
+        <h4>Journal de vente</h4>
+        <hr />
+        <i class="bi bi-x-circle position-absolute" @click="close_rapport"></i>
+        <h5 v-if="libelle !== null">Nom du package: {{ libelle }}</h5>
+        <table class="table" v-if="gainRapport !== null">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre de pièces vendus</th>
+              <th>Montant recus</th>
+              <th>Date d'enregistrement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in gainRapport" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.produits_vendus }}</td>
+              <td>{{ moneyFormat.format(item.cout) }} Fcfa</td>
+              <td>{{ new Date(item.created_at).toLocaleDateString("fr") }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  <Footer class="my_footer" v-if="gainRapport !== null"></Footer>
+  <Footer class="my_footer"></Footer>
 </template>
 
 <script>
@@ -156,11 +245,11 @@ export default {
       moneyFormat: new Intl.NumberFormat("de-DE"),
       nombre: null,
       rapport: null,
-      gainRapport:null,
+      gainRapport: null,
       showRapport: false,
-      libelle:null,
-      benefice:null,
-      currency:null
+      libelle: null,
+      benefice: null,
+      currency: null,
     };
   },
   components: {
@@ -179,7 +268,7 @@ export default {
           this.user = res.data.data.find(
             (item) => item.id == this.$route.params.id
           );
-          this.currency = `${this.moneyFormat.format(this.user.solde)} Fcfa`
+          this.currency = `${this.moneyFormat.format(this.user.solde)} Fcfa`;
           console.log("User", this.user);
           this.isLoading = false;
         })
@@ -187,27 +276,27 @@ export default {
           console.log(error);
         });
     },
-    getRapport(id,libelle){
-     axios.get(lien + "/api/gains_inv/" + this.$route.params.id)
-      .then((res) => {
-      console.log(res);
-      this.nombre = res.data.data.souscription;
-      this.rapport = this.nombre.find(item => item.id == id)
-      this.gainRapport = this.rapport.rapport
-     console.log("RAPPORT",this.gainRapport);
-     this.libelle = libelle;
-     this.showRapport = !this.showRapport
-  })
+    getRapport(id, libelle) {
+      axios
+        .get(lien + "/api/gains_inv/" + this.$route.params.id)
+        .then((res) => {
+          console.log(res);
+          this.nombre = res.data.data.souscription;
+          this.rapport = this.nombre.find((item) => item.id == id);
+          this.gainRapport = this.rapport.rapport;
+          console.log("RAPPORT", this.gainRapport);
+          this.libelle = libelle;
+          this.showRapport = !this.showRapport;
+        });
     },
-    close_rapport(){
+    close_rapport() {
       this.gainRapport = null;
-      this.showRapport = !this.showRapport
-    }
+      this.showRapport = !this.showRapport;
+    },
   },
   created() {
     this.isLoading = true;
-    axios.get(lien + "/api/gains_inv/" + this.$route.params.id)
-    .then((res) => {
+    axios.get(lien + "/api/gains_inv/" + this.$route.params.id).then((res) => {
       console.log("GAINO invest", res);
       this.nombre = res.data.data.souscription;
       this.gain = res.data;
@@ -265,42 +354,51 @@ th,
 td {
   border: thin solid rgba(141, 140, 140, 0.692) !important;
 }
-.bg-pen{
-background: rgb(231, 202, 15) !important;
-border:1px solid black !important;
-
+.bg-pen {
+  background: rgb(231, 202, 15) !important;
+  border: 1px solid black !important;
 }
 .my_footer {
-  position: relative;
+  position: absolute !important;
   width: 100%;
-  bottom: -20em;
+  bottom: -8em;
   margin-left: 0 !important;
 }
 .user {
   text-align: left;
 }
-.get_rapport{
-width:100% !important;
-height:100% !important;
-position: fixed !important;
-top:0;
-left:0;
-display:flex !important;
-place-items: center;
-justify-content: center;
-background: rgba(0, 0, 0, 0.468);
+.get_rapport {
+  width: 100% !important;
+  height: 100% !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  display: flex !important;
+  place-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.468);
 }
-.get_rapport div{
-background: white;
+.get_rapport div {
+  background: white;
 }
 .bi-x-circle {
-top:0;
-right: .5em;
-font-size: 2em;
-color:crimson;
-cursor: pointer;
+  top: 0;
+  right: 0.5em;
+  font-size: 2em;
+  color: crimson;
+  cursor: pointer;
 }
-.badge{
-  font-size:1em !important;
+.badge {
+  font-size: 1em !important;
 }
+input,select{ 
+  border: 1px solid black !important;
+}
+.form-group{ 
+  text-align: left !important;
+}
+label{
+  font-weight: bold !important;
+}
+
 </style>

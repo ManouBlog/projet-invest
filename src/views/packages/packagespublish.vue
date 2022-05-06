@@ -31,7 +31,7 @@
               <tr>
                 <th class="bg-light">#</th>
                 <th class="bg-light">Nom du fournisseur</th>
-                <th class="bg-light">Nom du package</th>
+                <th class="bg-light">Nom de l'article</th>
                 <th class="bg-light">Nombre de piéces</th>
                 <th class="bg-light">Prix d'achat par pièce</th>
                 <th class="bg-light">Prix de vente par pièces</th>

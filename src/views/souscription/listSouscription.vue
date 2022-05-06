@@ -30,12 +30,15 @@
               <tr>
                 <th class="bg-light">#</th>
                 <th class="bg-light">Nom de l'article</th>
-                <th class="bg-light">Prix d'achat par pièce</th>
+                
+                <!-- <th class="bg-light">Prix d'achat par pièce</th>
                 <th class="bg-light">Prix de vente par pièce</th>
-                <th class="bg-light">Gain par pièces</th>
+                <th class="bg-light">Gain par pièces</th> -->
                 <!-- <th class="bg-light">Nombre de pièces</th> -->
                 <!-- <th class="bg-light">Délai d'ecoulement</th> -->
                 <th class="bg-light">Souscripteurs</th>
+                <th class="bg-light">Nombre de pièces achetées</th>
+                <th class="bg-light">Prix Total des pièces achetées</th>
 
                 <!-- <th class="bg-light">date d échéance</th>
                 <th class="bg-light">Publication</th>   -->
@@ -53,7 +56,7 @@
                 <td v-if="item.package">
                   {{ item.package.libelle }}
                 </td>
-                <td v-if="item.package">
+                <!-- <td v-if="item.package">
                   {{ moneyFormat.format(item.package.cout_acquisition) }} Fcfa
                 </td>
                 <td v-if="item.package">
@@ -61,7 +64,7 @@
                 </td>
                 <td v-if="item.package">
                   {{ moneyFormat.format(item.package.gain_par_piece) }} Fcfa
-                </td>
+                </td> -->
                 <!-- <td v-if="item.package">
                   {{ moneyFormat.format(item.package.nb_products) }}
                 </td> -->
@@ -70,6 +73,12 @@
                 </td> -->
                 <td v-if="item.user">
                   {{ item.user.nom }} {{ item.user.prenoms }}
+                </td>
+                 <td>
+                  {{ item.nb_pieces }}
+                </td>
+                <td v-if="item.package"     >
+                  {{`${moneyFormat.format(item.nb_pieces * item.package.cout_acquisition)} Fcfa`}}
                 </td>
                 <td>
                   {{ new Date(item.created_at).toLocaleDateString("fr") }}
@@ -224,7 +233,7 @@ td {
 .my_footer {
   position: absolute;
   width: 100%;
-  bottom:-5em;
+  bottom: -5em;
   margin-left: 0 !important;
 }
 .boutons {

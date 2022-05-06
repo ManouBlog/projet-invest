@@ -38,6 +38,7 @@
                   class="form-control"
                   placeholder="Nom"
                   v-model="utilisateur.nom"
+                  required
                 />
               </div>
             </div>
@@ -50,6 +51,7 @@
                   class="form-control form-control-danger"
                   placeholder="Prénoms"
                   v-model="utilisateur.prenoms"
+                  required
                 />
               </div>
             </div>
@@ -94,13 +96,14 @@
                   class="form-control"
                   placeholder="ex:yopougon"
                   v-model="utilisateur.lieu_habitation"
+                  required
                 />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label class="form-label">Assigner un role</label>
-                <select class="w-100 form-control" v-model="profile" id="role" multiple>
+                <select class="w-100 form-control" v-model="profile" id="role" multiple required>
                   <option value="" disabled>ROLE</option>
                   <option
                     v-for="role in listRole"
@@ -123,6 +126,7 @@
                   class="form-control"
                   placeholder="ex:******"
                   v-model="password"
+                  required
                 />
               </div>
             </div>

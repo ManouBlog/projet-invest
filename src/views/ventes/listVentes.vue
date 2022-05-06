@@ -144,7 +144,7 @@ export default {
       console.log("LISTESVENTES", res);
       this.listVentes = res.data.data;
       if(this.listVentes.length > 0 ){
-     this.souscripteurs = this.listVentes[1].souscripteurs;
+     this.souscripteurs = this.listVentes[0].souscripteurs;
       }
       
       // this.souscripteursone = this.souscripteurs.find(

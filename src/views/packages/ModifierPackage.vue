@@ -136,7 +136,7 @@
 
         
       </div>
-      <div class="form-actions">
+      <div class="form-actions" v-if="libelle.sell.length == 0">
         <div class="card-body">
           <button
             type="submit"
@@ -301,9 +301,9 @@ font-weight: bold !important;
 }
 
 .my_footer{
-position:relative;
+position:absolute;
 width:100%;
-bottom:-8em;
+bottom:-6em;
 margin-left: 0 !important;
 }
 input,select{ 

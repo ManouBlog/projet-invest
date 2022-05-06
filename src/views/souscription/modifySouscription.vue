@@ -1,8 +1,10 @@
 <template>
-<loading :active="isLoading" 
-        :can-cancel="true" 
-        :on-cancel="onCancel"
-        :is-full-page="fullPage"></loading>
+  <loading
+    :active="isLoading"
+    :can-cancel="true"
+    :on-cancel="onCancel"
+    :is-full-page="fullPage"
+  ></loading>
   <Header></Header>
   <Menu></Menu>
   <div class="page-wrapper">
@@ -12,7 +14,12 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3"><span v-if="detailPackage !== null">details de l'article : <input type="text" v-model="detailPackage.libelle" disabled></span></li>
+              <li class="fw-bold h3">
+                <span v-if="detailPackage !== null"
+                  >details de l'article :
+                  <input type="text" v-model="detailPackage.libelle" disabled
+                /></span>
+              </li>
             </ol>
           </div>
         </div>
@@ -20,14 +27,116 @@
       <div class="icon">
         <a href="javascript:void(0)" class="back h4" @click="$router.go(-1)"
           ><box-icon name="left-arrow-alt" animation="tada"></box-icon
-        >Souscription</a>
+          >Souscription</a
+        >
       </div>
     </div>
-    <div class="container px-5" v-if="detailPackage !== null" >
-    <div>
-    <h5 class="text-center badge bg-warning">Détail de l 'article</h5>
-    </div>
-    <table class="table" >
+    <div class="container px-5" v-if="detailPackage !== null">
+      <div>
+        <h5 class="text-center badge bg-warning">Détail de l 'article</h5>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">libelle</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="detailPackage.libelle"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Délai d'ecoulement</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="detailPackage.nb_jours"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Prix d'achat par pièce</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="detailPackage.cout_acquisition"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Prix de vente par pièce</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="detailPackage.cout_vente"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Nombre de pièces</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="detailPackage.nb_products"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Gain par pièces</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="detailPackage.gain_par_piece"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Prix total d'achat du package</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="prixTotal"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Prix total de vente du package</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="prixAchat"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Souscripteurs</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="userWhoBuy.nom"
+              disabled
+            />
+          </div>
+        </div>
+      </div>
+      <!-- <table class="table" >
     <thead>
     <tr>
     <th>libelle</th>
@@ -54,33 +163,30 @@
     <td>{{userWhoBuy.nom}} {{userWhoBuy.prenoms}}</td>
     </tr>
     </tbody>
-    </table>
-    
+    </table> -->
     </div>
     <div class="container px-5" v-if="userWhoBuy !== null">
-    <div>
-    <h5 class="text-center  badge bg-info bg-gradient">Rapport d'achat</h5>
-    <!-- <h3 v-if="userWhoBuy !== null">Acheteur : {{userWhoBuy.nom}} {{userWhoBuy.prenoms}}</h3> -->
+      <div>
+        <h5 class="text-center badge bg-info bg-gradient">Rapport d'achat</h5>
+        <!-- <h3 v-if="userWhoBuy !== null">Acheteur : {{userWhoBuy.nom}} {{userWhoBuy.prenoms}}</h3> -->
+      </div>
+      <table class="table" v-if="rapportAchat !== null">
+        <thead>
+          <tr v-if="this.rapportAchat !== null">
+            <th>Nombre de pièces vendus</th>
+            <th>Chiffre Réalisé</th>
+            <th>Date d'enregistrement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in rapportAchat" :key="index">
+            <td>{{ item.produits_vendus }}</td>
+            <td>{{ moneyFormat.format(item.cout) }} Fcfa</td>
+            <td>{{ new Date(item.created_at).toLocaleDateString("fr") }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <table class="table" v-if="rapportAchat !== null">
-    <thead>
-    <tr v-if="this.rapportAchat !== null">
-    <th>Nombre de pièces vendus</th>
-     <th>Chiffre Réalisé</th>
-     <th>Date d'enregistrement</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr v-for="(item,index) in rapportAchat" :key="index">
-    <td>{{item.produits_vendus}}</td>
-    <td>{{ moneyFormat.format(item.cout)}} Fcfa</td>
-    <td>{{new Date(item.created_at).toLocaleDateString('fr')}}</td>
-    </tr>
-    </tbody>
-    </table>
-    
-    </div>
-   
   </div>
   <Footer class="my_footer" v-if="list_souscrit !== null"></Footer>
 </template>
@@ -91,50 +197,55 @@ import axios from "axios";
 import Header from "@/components/header";
 import Menu from "@/components/menu";
 import Footer from "@/components/footer";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   name: "ModifySouscription",
   data() {
     return {
       list_souscrit: null,
       package: null,
-      isLoading:false,
-      detailPackage:null,
-      userWhoBuy:null,
-      rapportAchat:null,
-      moneyFormat : new Intl.NumberFormat("de-DE"),
+      isLoading: false,
+      detailPackage: null,
+      userWhoBuy: null,
+      rapportAchat: null,
+      moneyFormat: new Intl.NumberFormat("de-DE"),
+      prixTotal: null,
+      prixAchat: null,
     };
   },
   components: {
     Header,
     Menu,
     Footer,
-    Loading
+    Loading,
   },
-  
+
   created() {
-    this.isLoading = true
-    axios.get(lien +"/api/achats").then((res) => {
+    this.isLoading = true;
+    axios.get(lien + "/api/achats").then((res) => {
       console.log("OBTENIRPACKAGES", res);
       this.list_souscrit = res.data.data;
       this.package = this.list_souscrit.find(
         (el) => el.id == this.$route.params.id
       );
-      this.detailPackage = this.package.package
-      this.userWhoBuy = this.package.user
-      this.rapportAchat = this.package.rapport
+      this.detailPackage = this.package.package;
+      this.userWhoBuy = this.package.user;
+      this.rapportAchat = this.package.rapport;
+       this.prixAchat = `${this.moneyFormat.format(
+        this.detailPackage.nb_products * this.detailPackage.cout_vente
+      )} Fcfa`;
+      this.prixTotal = `${this.moneyFormat.format(
+        this.detailPackage.nb_products * this.detailPackage.cout_acquisition
+      )} Fcfa`;
       console.log("id/", this.$route.params.id);
       console.log("PACKAGES/", this.package);
       console.log("DETAIL", this.detailPackage);
-      console.log("USER",this.userWhoBuy);
-      console.log("RAPPORT",this.rapportAchat);
-      this.isLoading = false
+      console.log("USER", this.userWhoBuy);
+      console.log("RAPPORT", this.rapportAchat);
+      this.isLoading = false;
     });
-    
   },
- 
- 
 };
 </script>
 <style scoped>
@@ -143,23 +254,23 @@ export default {
   left: 1em;
   top: 0;
 }
-.float-left{
-text-align: left !important;
+.float-left {
+  text-align: left !important;
 }
-.my_footer{
-position:relative;
-width:100%;
-bottom:-18em;
-margin-left: 0 !important;
+.my_footer {
+  position: relative;
+  width: 100%;
+  bottom: -18em;
+  margin-left: 0 !important;
 }
 .publie {
   min-height: 38px;
   border: 1px thin gray;
   border-radius: 0.25rem;
 }
-.bg-pen{
-background: rgb(231, 202, 15) !important;
-border:3px solid black !important;
+.bg-pen {
+  background: rgb(231, 202, 15) !important;
+  border: 3px solid black !important;
 }
 .table {
   border: thin solid rgba(139, 139, 139, 0.63) !important;
@@ -168,13 +279,16 @@ th,
 td {
   border: thin solid rgba(141, 140, 140, 0.692) !important;
 }
-.badge{
-font-size:1.3em !important;
+.badge {
+  font-size: 1.3em !important;
 }
 input,select{ 
   border: 1px solid black !important;
 }
 .form-group{ 
   text-align: left !important;
+}
+label{
+  font-weight: bold !important;
 }
 </style>

@@ -26,14 +26,80 @@
 
     <div class="row container-fluid">
       <div class="col-md-12">
-      <div class="user" v-if="user !== null">
-       <span> <b class="fw-bold">Nom</b>  : <input type="text" v-model="user.nom" disabled></span> <br>
+      <div class="user row" v-if="user !== null">
+       <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Nom</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.nom"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">prenoms</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.prenoms"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">email</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.email"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Télephone</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.phone"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Registre de commerce</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.registre_commerce"
+                disabled
+              />
+            </div>
+          </div>
+            <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Solde</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="money"
+                disabled
+              />
+            </div>
+          </div>
+       <!-- <span> <b class="fw-bold">Nom</b>  : <input type="text" v-model="user.nom" disabled></span> <br>
        <span><b class="fw-bold">prenoms</b> :<input type="text" v-model="user.prenoms" disabled></span> <br>
        <span><b class="fw-bold">email</b> : <input type="text" v-model="user.email" disabled></span><br>
        <span><b class="fw-bold">Télephone</b> : <input type="text" v-model="user.phone" disabled></span> <br>
        <span><b class="fw-bold">Solde</b> : <input type="text" v-model="money" disabled></span> <br>
         <span v-if="user.registre_commerce"><b class="fw-bold">Registre de commerce</b> : <input type="text" v-model="user.registre_commerce" disabled></span>
-         <span v-else><b class="fw-bold">Registre de commerce :</b> <input type="text" v-model="rgnot" disabled></span>
+         <span v-else><b class="fw-bold">Registre de commerce :</b> <input type="text" v-model="rgnot" disabled></span> -->
       </div>
         <div>
           <table id="MyTableData" class="table">
@@ -197,5 +263,14 @@ width:100%;
 bottom:-18em;
 margin-left: 0 !important;
 }
+input,select{ 
+  border: 1px solid black !important;
+}
+.form-group{ 
+  text-align: left !important;
+}
+label{
+  font-weight: bold !important;
+  }
 
 </style>

@@ -49,6 +49,10 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+[disabled]{
+  color:rgb(11, 10, 10) !important;
+  font-weight: bold !important;
+}
 
 
 
