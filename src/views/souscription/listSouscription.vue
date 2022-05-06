@@ -40,8 +40,8 @@
                 <!-- <th class="bg-light">date d échéance</th>
                 <th class="bg-light">Publication</th>   -->
                 <!-- <th class="bg-light">Payés</th> -->
-                <th class="bg-light">date de soucription</th>
-                <th class="bg-light">date d'échéance</th>
+                <th class="bg-light">Date de souscription</th>
+                <th class="bg-light">Date d'échéance</th>
                 <th class="bg-light">Détails</th>
               </tr>
             </thead>

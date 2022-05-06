@@ -39,8 +39,7 @@
           <span><b class="fw-bold">email</b> : <input type="text" v-model="user.email" disabled></span
           ><br />
           <span><b class="fw-bold">Télephone</b> : <input type="text" v-model="user.phone" disabled></span> <br>
-           <span><b class="fw-bold">Solde Actuel</b> : <input type="text" v-model="currency" disabled></span> <br>
-            <span><b class="fw-bold">Registre</b> : <input type="text" v-model="user.registre_commerce" disabled></span>
+           <span><b class="fw-bold">Solde Actuel</b> : <input type="text" v-model="currency" disabled></span>
         </div>
         <div>
           <table id="MyTableData" class="table">
@@ -67,7 +66,7 @@
     </div>
 
     <div v-if="nombre !== null" class="container px-5">
-      <h4>Les articles souscris</h4>
+      <h4 class="badge bg-info bg-gradient">Les articles souscris</h4>
       <table class="table" v-if="nombre !== null">
         <thead>
           <tr>
@@ -300,5 +299,8 @@ right: .5em;
 font-size: 2em;
 color:crimson;
 cursor: pointer;
+}
+.badge{
+  font-size:1em !important;
 }
 </style>

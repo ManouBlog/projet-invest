@@ -24,7 +24,7 @@
     <div class="row container-fluid">
       <div class="col-md-12">
         <div>
-          <table id="MyTableData" class="table">
+          <table id="MyTableData" class="table" v-if="this.listVentes !== null">
             <thead>
               <tr>
                 <th class="bg-light">#</th>
@@ -143,7 +143,10 @@ export default {
     axios.get(lien + "/api/ventes").then((res) => {
       console.log("LISTESVENTES", res);
       this.listVentes = res.data.data;
-      this.souscripteurs = this.listVentes[0].souscripteurs;
+      if(this.listVentes.length > 0 ){
+     this.souscripteurs = this.listVentes[1].souscripteurs;
+      }
+      
       // this.souscripteursone = this.souscripteurs.find(
       //   (item) => item.nb_ventes === this.listVentes.nb_ventes
       // );
