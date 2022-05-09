@@ -50,9 +50,12 @@
                   type="text"
                   class="form-control"
                   v-model="libelle"
+                  pattern="[a-z]*"
                   required
                 />
+                <span class="small text-danger" v-if="this.libelle == null">le nom doit être en miniscule*</span>
               </div>
+              
             </div>
 
             <!--/span-->
@@ -97,6 +100,7 @@
                   placeholder="ex:200"
                   v-model="nb_products"
                   pattern="^([0-9]*)$"
+                  required
                 />
               </div>
             </div>
@@ -264,5 +268,11 @@ select {
 }
 .form-group {
   text-align: left !important;
+}
+input:invalid,select:invalid{
+  border:1px solid red !important;
+}
+input:valid,select:valid{
+  border:1px solid rgb(74, 164, 0) !important;
 }
 </style>

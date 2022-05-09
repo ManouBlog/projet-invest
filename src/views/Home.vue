@@ -105,6 +105,10 @@ export default {
      })
       
    }
+ },
+ created(){
+       localStorage.removeItem("token")
+       localStorage.removeItem("user")
  }
  
 };

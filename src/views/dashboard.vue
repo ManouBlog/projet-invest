@@ -20,7 +20,8 @@ export default {
     components:{
         Header,Menu,Footer,Accueil,
     },
-    methods:{
+    mounted(){
+        
        
     }
    

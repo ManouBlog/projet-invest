@@ -231,9 +231,13 @@ export default {
         .then((res) => {
           console.log("OBTENIRPACKAGES", res.data.data);
           this.list_packages = res.data.data;
+          
+           
+
           if(localStorage.getItem('nombre') < this.list_packages.length){
             this.newshow = !this.newshow
           }
+          
           this.nombrePackages = this.list_packages.length;
           localStorage.setItem('nombre',this.nombrePackages)
            console.log("NOTIFICATION",this.newNombrePackage);

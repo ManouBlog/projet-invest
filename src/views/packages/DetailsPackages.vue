@@ -15,7 +15,10 @@
         <div class="col-md-7 align-self-center text-end">
           <div class="d-flex justify-content-end align-items-center">
             <ol class="breadcrumb justify-content-end">
-              <li class="fw-bold h3" v-if="Detailpackages !== null"><span>Détails du package</span> <input type="text" v-model="Detailpackages.libelle" disabled> </li>
+              <li class="fw-bold h3" v-if="Detailpackages !== null">
+                <span>Détails du package</span>
+                <input type="text" v-model="Detailpackages.libelle" disabled />
+              </li>
             </ol>
           </div>
         </div>
@@ -42,7 +45,7 @@
             </thead>
             <tbody>
               <tr>
-                  <td>{{Detailpackages.libelle}}</td>
+                <td>{{ Detailpackages.libelle }}</td>
                 <td>
                   <!-- <div class="spinner-border" role="status" v-if="this.Detailpackages.photo === null">
                    <span class="visually-hidden">Loading...</span>
@@ -51,7 +54,7 @@
                   <img
                     v-if="this.Detailpackages.photo"
                     class="w-25"
-                    :src="'http://192.168.1.9:8000' + Detailpackages.photo"
+                    :src="'http://192.168.1.6:8000' + Detailpackages.photo"
                     :alt="Detailpackages.libelle"
                   />
                   <img v-else src="#" alt="Pas d'image" />
@@ -60,7 +63,11 @@
                   {{ Detailpackages.package.length }}
                 </td>
                 <td v-else>Pas d'article</td>
-                <td>{{new Date(Detailpackages.created_at).toLocaleDateString('fr')}}</td>
+                <td>
+                  {{
+                    new Date(Detailpackages.created_at).toLocaleDateString("fr")
+                  }}
+                </td>
                 <!-- <td >
                   {{ item.nb_products}} 
                 </td> -->

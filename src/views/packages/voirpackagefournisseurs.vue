@@ -1,9 +1,11 @@
 <template>
-<loading :active="isLoading" 
-        :can-cancel="true" 
-        :on-cancel="onCancel"
-        :is-full-page="fullPage"></loading>
-    <Header></Header>
+  <loading
+    :active="isLoading"
+    :can-cancel="true"
+    :on-cancel="onCancel"
+    :is-full-page="fullPage"
+  ></loading>
+  <Header></Header>
   <Menu></Menu>
   <div class="page-wrapper">
     <div class="container-fluid">
@@ -20,16 +22,82 @@
     </div>
 
     <div class="row container-fluid">
-
-    <div class="float">
-    <span class="fw-bold">Nom:</span> <input type="text" v-model="user.nom" disabled><br>
-     <span class="fw-bold">Prénoms:</span> <input type="text" v-model="user.prenoms" disabled><br>
-      <span class="fw-bold">Email:</span> <input type="text" v-model="user.email" disabled><br>
-       <span class="fw-bold">Solde:</span> <input type="text" v-model="currency" disabled> 
+    <div class="row">
+     <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Nom</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.nom"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">prenoms</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.prenoms"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">email</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.email"
+                disabled
+              />
+            </div>
+          </div>
+           <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Télephone</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+                v-model="user.phone"
+                disabled
+              />
+            </div>
+          </div>
+            <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Solde</label>
+              <input
+                type="text"
+                class="form-control form-control-danger"
+               v-model="currency"
+                disabled
+              />
+            </div>
+          </div>
+    
     </div>
-    <div class="created_package mt-2">
-    <button class="btn btn-lg bouton-create-type-package text-light fw-bold" @click="addPackage">Creer un article</button>
-    </div>
+      <!-- <div class="float">
+        <span class="fw-bold">Nom:</span>
+        <input type="text" v-model="user.nom" disabled /><br />
+        <span class="fw-bold">Prénoms:</span>
+        <input type="text" v-model="user.prenoms" disabled /><br />
+        <span class="fw-bold">Email:</span>
+        <input type="text" v-model="user.email" disabled /><br />
+        <span class="fw-bold">Solde:</span>
+        <input type="text" v-model="currency" disabled />
+      </div> -->
+      <div class="created_package mt-2">
+        <button
+          class="btn btn-lg bouton-create-type-package text-light fw-bold"
+          @click="addPackage"
+        >
+          Creer un article
+        </button>
+      </div>
       <div class="col-md-12">
         <div>
           <table id="MyTableData" class="table" v-if="this.packages !== null">
@@ -48,34 +116,53 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in packages" :key="index">
+              <tr v-for="(item, index) in packages" :key="index">
                 <td>
-                  {{index+1}}
+                  {{ index + 1 }}
                 </td>
                 <td>
-                  {{item.libelle}}
+                  {{ item.libelle }}
                 </td>
-                <td>
-                  {{moneyFormat.format(item.cout_acquisition)}} Fcfa
-                </td>
-                <td>
-                  {{ moneyFormat.format(item.cout_vente)}} Fcfa
-                </td>
-                <td>
-                  {{ moneyFormat.format(item.gain_par_piece) }} Fcfa
-                </td>
+                <td>{{ moneyFormat.format(item.cout_acquisition) }} Fcfa</td>
+                <td>{{ moneyFormat.format(item.cout_vente) }} Fcfa</td>
+                <td>{{ moneyFormat.format(item.gain_par_piece) }} Fcfa</td>
                 <td>{{ item.nb_jours }} jours</td>
                 <td>{{ item.nb_products }}</td>
                 <td>
-                  <span  v-if="item.etat == 'en cours de traitement'" class="badge bg-info bg-gradient">En cours de traitement</span>
-                  <span v-if="item.etat == 'publie'" class=" badge bg-success bg-gradient">Publié</span>
-                  <span  v-if="item.etat == 'rejete'" class="position-relative verif badge bg-danger bg-gradient"> Rejeter</span>
+                  <span
+                    v-if="item.etat == 'en cours de traitement'"
+                    class="badge bg-info bg-gradient"
+                    >En cours de traitement</span
+                  >
+                  <span
+                    v-if="item.etat == 'publie'"
+                    class="badge bg-success bg-gradient"
+                    >Publié</span
+                  >
+                  <span
+                    v-if="item.etat == 'rejete'"
+                    class="position-relative verif badge bg-danger bg-gradient"
+                  >
+                    Rejeter</span
+                  >
                 </td>
-                <td>{{ new Date(item.created_at).toLocaleDateString('fr') }}</td>
-                
+                <td>
+                  {{ new Date(item.created_at).toLocaleDateString("fr") }}
+                </td>
+
                 <td class="text-right">
-                  <div class="dropdown dropdown-action d-flex justify-content-center flex-wrap">
-                      <router-link v-if="item.etat == 'rejete'" title="Detail Package" :to="{name:'ModifierPackageRejete',params:{id:item.id}}" class="btn boutons m-1 bg-pen text-light">
+                  <div
+                    class="dropdown dropdown-action d-flex justify-content-center flex-wrap"
+                  >
+                    <router-link
+                      v-if="item.etat == 'rejete'"
+                      title="Detail Package"
+                      :to="{
+                        name: 'ModifierPackageRejete',
+                        params: { id: item.id },
+                      }"
+                      class="btn boutons m-1 bg-pen text-light"
+                    >
                       <i class="bi bi-eye"></i>
                     </router-link>
                     <!-- <router-link title="Modifier l' utilisateur" :to="{name:'AssignerRole',params:{id:item.id}}" class="btn boutons  m-1 bg-pen text-light">
@@ -92,12 +179,22 @@
         </div>
       </div>
     </div>
-      <div class="delete_personne" v-show="showMsg">
-     <div class="delete">
-     <span class="fw-bold">vous-voulez vraiment supprimer?</span>
-     <button class="btn btn-lg bg-pen text-light my-3 border-0 rounded p-2 fw-bold" @click="delete_user">Supprimer</button>
-     <button class="btn btn-lg bg-dark text-light border-0 rounded p-2 fw-bold" @click="fermer">Annuler</button>
-     </div>
+    <div class="delete_personne" v-show="showMsg">
+      <div class="delete">
+        <span class="fw-bold">vous-voulez vraiment supprimer?</span>
+        <button
+          class="btn btn-lg bg-pen text-light my-3 border-0 rounded p-2 fw-bold"
+          @click="delete_user"
+        >
+          Supprimer
+        </button>
+        <button
+          class="btn btn-lg bg-dark text-light border-0 rounded p-2 fw-bold"
+          @click="fermer"
+        >
+          Annuler
+        </button>
+      </div>
     </div>
   </div>
   <Footer class="my_footer" v-if="this.packages !== null"></Footer>
@@ -110,44 +207,48 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import Header from "@/components/header";
 import Menu from "@/components/menu";
 import Footer from "@/components/footer";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 import { lien } from "/src/assets/api.js";
 import axios from "axios";
 export default {
-   name:"VoirPackageFournisseurs",
-    components:{
-    Header,Menu,Footer,Loading
+  name: "VoirPackageFournisseurs",
+  components: {
+    Header,
+    Menu,
+    Footer,
+    Loading,
   },
-   data(){
-       return{
-           user:null,
-           packages:null,
-           moneyFormat : new Intl.NumberFormat("de-DE"),
-           isLoading:false,
-           currency:null,
-          
-       }
-   },
-   methods: {
-       addPackage(){
-      this.$router.push('/package')
+  data() {
+    return {
+      user: null,
+      packages: null,
+      moneyFormat: new Intl.NumberFormat("de-DE"),
+      isLoading: false,
+      currency: null,
+    };
+  },
+  methods: {
+    addPackage() {
+      this.$router.push("/package");
     },
-   },
-   created() {
-     this.user = this.$store.state.user
-     this.currency = `${this.moneyFormat.format(this.user.solde)} Fcfa`
+  },
+  created() {
+    this.user = this.$store.state.user;
+    this.currency = `${this.moneyFormat.format(this.user.solde)} Fcfa`;
     this.isLoading = true;
-    axios.get(lien+"/api/fourn_package/"+this.user.id,
-    { headers: {
-            'Authorization':"Bearer "+this.$store.state.token,
-          },})
+    axios
+      .get(lien + "/api/fourn_package/" + this.user.id, {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+        },
+      })
 
       .then((res) => {
         console.log("OBTENIRPACKAGES", res);
-       this.packages = res.data.data;
+        this.packages = res.data.data;
         console.log("LIST", this.packages);
-        this.isLoading = false
+        this.isLoading = false;
         setTimeout(function () {
           $("#MyTableData").DataTable({
             pagingType: "full_numbers",
@@ -183,38 +284,45 @@ export default {
         }, 10);
       });
   },
-}
+};
 </script>
 <style scoped>
-.float{
-text-align: left;
+.float {
+  text-align: left;
 }
-.my_footer{
-position:relative;
-width:100%;
-bottom:-10em;
-margin-left: 0 !important;
+.my_footer {
+  position: relative;
+  width: 100%;
+  bottom: -10em;
+  margin-left: 0 !important;
 }
-.table{
-border:thin solid rgba(139, 139, 139, 0.63) !important;
+.table {
+  border: thin solid rgba(139, 139, 139, 0.63) !important;
 }
-th,td{
- border:thin solid rgba(141, 140, 140, 0.692) !important;
+th,
+td {
+  border: thin solid rgba(141, 140, 140, 0.692) !important;
 }
-.created_package{
-text-align:left;
-margin-bottom:1em;
+.created_package {
+  text-align: left;
+  margin-bottom: 1em;
 }
-.created_package button{
-background: linear-gradient(200deg, rgb(231, 202, 15),rgb(194, 191, 19));
-border:2px solid black !important;
-
+.created_package button {
+  background: linear-gradient(200deg, rgb(231, 202, 15), rgb(194, 191, 19));
+  border: 2px solid black !important;
 }
 
 .bg-pen {
   background: rgb(231, 202, 15) !important;
   border: 1px solid black !important;
 }
-
-
+input,select{ 
+  border: 1px solid black !important;
+}
+.form-group{ 
+  text-align: left !important;
+}
+label{
+  font-weight: bold !important;
+}
 </style>

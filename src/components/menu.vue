@@ -453,6 +453,7 @@ export default {
             localStorage.removeItem("user");
             this.$router.push("/")
             this.$store.state.user = null
+            this.$store.state.token = null
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
