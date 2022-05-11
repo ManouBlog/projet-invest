@@ -54,7 +54,7 @@
                   <img
                     v-if="this.Detailpackages.photo"
                     class="w-25"
-                    :src="'http://192.168.1.6:8000' + Detailpackages.photo"
+                    :src="'http://192.168.1.9:8000' + Detailpackages.photo"
                     :alt="Detailpackages.libelle"
                   />
                   <img v-else src="#" alt="Pas d'image" />

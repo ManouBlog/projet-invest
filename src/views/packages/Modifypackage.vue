@@ -56,7 +56,7 @@
                   <img
                     v-show="showImg"
                     class="img-package position-absolute"
-                    :src="'http://192.168.1.6:8000' + libelle.photo"
+                    :src="'http://192.168.1.9:8000' + libelle.photo"
                     :alt="libelle.libelle"
                   />
                 </div>

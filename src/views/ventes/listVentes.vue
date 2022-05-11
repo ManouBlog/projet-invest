@@ -35,7 +35,7 @@
                 <th class="bg-light" v-if="this.user.tab[0] == 'admin'">
                   Fournisseurs
                 </th>
-                 <th class="bg-light" v-if="this.user.tab[0] == 'admin'">
+                <th class="bg-light" v-if="this.user.tab[0] == 'admin'">
                   Détails
                 </th>
                 <!-- <th class="bg-light" v-if="this.user.tab[0] == 'admin'">
@@ -73,9 +73,15 @@
                   </span>
                 </td> -->
                 <td class="text-right">
-                  <div class="dropdown dropdown-action d-flex justify-content-center flex-wrap">
-                    <router-link  :to="{name:'detailsVentes',params:{id:item.id}}" data-title="détail vente"  class="btn m-1 boutons bg-pen text-light">
-                       <i class="bi bi-eye"></i>
+                  <div
+                    class="dropdown dropdown-action d-flex justify-content-center flex-wrap"
+                  >
+                    <router-link
+                      :to="{ name: 'detailsVentes', params: { id: item.id } }"
+                      data-title="détail vente"
+                      class="btn m-1 boutons bg-pen text-light"
+                    >
+                      <i class="bi bi-eye"></i>
                     </router-link>
                   </div>
                 </td>
@@ -84,7 +90,7 @@
           </table>
         </div>
       </div>
-<!-- 
+      <!-- 
       <div v-if="this.user.tab[0] == 'admin'" class="mt-5">
       <h2>listes des souscripteurs</h2>
       <table class="table">
@@ -105,7 +111,6 @@
       </table>
     </div> -->
     </div>
-    
   </div>
   <Footer class="my_footer"></Footer>
 </template>
@@ -146,10 +151,10 @@ export default {
     axios.get(lien + "/api/ventes").then((res) => {
       console.log("LISTESVENTES", res);
       this.listVentes = res.data.data;
-      if(this.listVentes.length > 0 ){
-     this.souscripteurs = this.listVentes[0].souscripteurs;
+      if (this.listVentes.length > 0) {
+        this.souscripteurs = this.listVentes[0].souscripteurs;
       }
-      
+
       // this.souscripteursone = this.souscripteurs.find(
       //   (item) => item.nb_ventes === this.listVentes.nb_ventes
       // );

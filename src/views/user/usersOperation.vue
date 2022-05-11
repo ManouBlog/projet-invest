@@ -73,7 +73,7 @@
           </div>
            <div class="col-md-4">
             <div class="form-group">
-              <label class="form-label">prenoms</label>
+              <label class="form-label">Prénoms</label>
               <input
                 type="text"
                 class="form-control form-control-danger"
