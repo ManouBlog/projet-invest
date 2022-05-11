@@ -1,9 +1,11 @@
 <template>
-<loading :active="isLoading" 
-        :can-cancel="true" 
-        :on-cancel="onCancel"
-        :is-full-page="fullPage"></loading>
-    <Header></Header>
+  <loading
+    :active="isLoading"
+    :can-cancel="true"
+    :on-cancel="onCancel"
+    :is-full-page="fullPage"
+  ></loading>
+  <Header></Header>
   <Menu></Menu>
   <div class="page-wrapper">
     <div class="container-fluid">
@@ -18,49 +20,58 @@
         </div>
       </div>
     </div>
-<div class="row container-fluid">
-     <div class="col-md-12">
+    <div class="row container-fluid">
+      <div class="col-md-12">
         <div class="table-responsive">
           <table id="MyTableData" class="table" v-if="this.articles !== null">
             <thead>
               <tr>
                 <th class="bg-light">#</th>
                 <th class="bg-light">Nom de l'article</th>
-                <th class="bg-light">Prix d'achat par pièce</th>
-                <th class="bg-light">Prix de vente par pièces</th>
+                <th class="bg-light">Prix d'achat par pièce (Fcfa)</th>
+                <th class="bg-light">Prix de vente par pièces (Fcfa)</th>
                 <th class="bg-light">Gain par pièce</th>
-                <th class="bg-light">Délai d'ecoulement</th>
+                <th class="bg-light">Délai d'ecoulement (jours)</th>
                 <th class="bg-light">Nombre de pièces</th>
                 <th class="bg-light">Etat</th>
                 <th class="bg-light text-right">Date d'enregistrement</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in articles" :key="index">
+              <tr v-for="(item, index) in articles" :key="index">
                 <td>
-                  {{index+1}}
+                  {{ index + 1 }}
                 </td>
                 <td>
-                  {{item.libelle}}
+                  {{ item.libelle }}
                 </td>
-                <td>
-                  {{moneyFormat.format(item.cout_acquisition)}} Fcfa
-                </td>
-                <td>
-                  {{ moneyFormat.format(item.cout_vente)}} Fcfa
-                </td>
-                <td>
-                  {{ moneyFormat.format(item.gain_par_piece) }} Fcfa
-                </td>
+                <td>{{ moneyFormat.format(item.cout_acquisition) }} Fcfa</td>
+                <td>{{ moneyFormat.format(item.cout_vente) }} Fcfa</td>
+                <td>{{ moneyFormat.format(item.gain_par_piece) }} Fcfa</td>
                 <td>{{ item.nb_jours }} jours</td>
                 <td>{{ item.nb_products }}</td>
                 <td>
-                  <span v-if="item.etat == 'en cours de traitement'" class="badge bg-info bg-gradient">En cours de traitement</span>
-                  <span v-if="item.etat == 'publie'" class="badge bg-success bg-gradient">Publié</span>
-                  <span v-if="item.etat == 'rejete'" class="badge bg-danger bg-gradient"> Rejeter</span>
+                  <span
+                    v-if="item.etat == 'en cours de traitement'"
+                    class="badge bg-info bg-gradient"
+                    >En cours de traitement</span
+                  >
+                  <span
+                    v-if="item.etat == 'publie'"
+                    class="badge bg-success bg-gradient"
+                    >Publié</span
+                  >
+                  <span
+                    v-if="item.etat == 'rejete'"
+                    class="badge bg-danger bg-gradient"
+                  >
+                    Rejeter</span
+                  >
                 </td>
-                <td>{{ new Date(item.created_at).toLocaleDateString('fr') }}</td>
-                
+                <td>
+                  {{ new Date(item.created_at).toLocaleDateString("fr") }}
+                </td>
+
                 <!-- <td class="text-right">
                   <div class="dropdown dropdown-action d-flex justify-content-center flex-wrap">
                       <router-link title="Voir les operations" :to="{name:'userOperation',params:{id:item.id}}" class="btn boutons  m-1 bg-pen text-light">
@@ -79,12 +90,9 @@
           </table>
         </div>
       </div>
-</div>
-
-
-
-      </div>
-       <Footer class="my_footer"></Footer>
+    </div>
+  </div>
+  <Footer class="my_footer"></Footer>
 </template>
 <script>
 import $ from "jquery";
@@ -93,37 +101,41 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import Header from "@/components/header";
 import Menu from "@/components/menu";
 import Footer from "@/components/footer";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 import { lien } from "/src/assets/api.js";
 import axios from "axios";
 
 export default {
-    name:"MesPackageSouscris",
-     components:{
-    Header,Menu,Footer,Loading
+  name: "MesPackageSouscris",
+  components: {
+    Header,
+    Menu,
+    Footer,
+    Loading,
   },
-    data() {
-        return{ 
-             user:this.$store.state.user,
-             moneyFormat : new Intl.NumberFormat("de-DE"),
-           isLoading:false,
-           articles:null
-        }
-         
-    },
-     created() {
+  data() {
+    return {
+      user: this.$store.state.user,
+      moneyFormat: new Intl.NumberFormat("de-DE"),
+      isLoading: false,
+      articles: null,
+    };
+  },
+  created() {
     this.isLoading = true;
-    axios.get(lien+"/api/souscris/"+this.user.id,
-    { headers: {
-            'Authorization':"Bearer "+this.$store.state.token,
-          },})
+    axios
+      .get(lien + "/api/souscris/" + this.user.id, {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+        },
+      })
 
       .then((res) => {
         console.log("OBTENIRPACKAGES", res);
-       this.articles = res.data.data;
+        this.articles = res.data.data;
         console.log("LIST", this.articles);
-        this.isLoading = false
+        this.isLoading = false;
         setTimeout(function () {
           $("#MyTableData").DataTable({
             pagingType: "full_numbers",
@@ -159,26 +171,27 @@ export default {
         }, 10);
       });
   },
-
-}
+};
 </script>
 <style scoped>
-.my_footer{
-position:absolute;
-width:100%;
-bottom:-10em;
-margin-left: 0 !important;
+.my_footer {
+  position: absolute;
+  width: 100%;
+  bottom: -10em;
+  margin-left: 0 !important;
 }
-.table{
-border:thin solid rgba(139, 139, 139, 0.63) !important;
+.table {
+  border: thin solid rgba(139, 139, 139, 0.63) !important;
 }
-th,td{
- border:thin solid rgba(141, 140, 140, 0.692) !important;
+th,
+td {
+  border: thin solid rgba(141, 140, 140, 0.692) !important;
 }
-input,select{ 
+input,
+select {
   border: 1px solid black !important;
 }
-.form-group{ 
+.form-group {
   text-align: left !important;
 }
 </style>

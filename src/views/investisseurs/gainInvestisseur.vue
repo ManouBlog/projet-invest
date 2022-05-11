@@ -34,7 +34,7 @@
     <div class="row container-fluid" v-if="gain !== null">
       <div class="col-md-12">
         <div class="user row" v-if="user !== null">
-         <div class="col-md-4">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">Nom</label>
               <input
@@ -45,7 +45,7 @@
               />
             </div>
           </div>
-           <div class="col-md-4">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">prenoms</label>
               <input
@@ -56,7 +56,7 @@
               />
             </div>
           </div>
-           <div class="col-md-4">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">email</label>
               <input
@@ -67,7 +67,7 @@
               />
             </div>
           </div>
-           <div class="col-md-4">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">Télephone</label>
               <input
@@ -78,7 +78,7 @@
               />
             </div>
           </div>
-           <div class="col-md-4">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="form-label">Registre de commerce</label>
               <input
@@ -155,7 +155,7 @@
           <tr>
             <th>#</th>
             <th>Nom de l'article</th>
-            <!-- <th>Prix d'achat par pièce</th> -->
+            <!-- <th>Prix d'achat par pièce (Fcfa)</th> -->
             <th>prix d'achat du package</th>
             <th>Prix de vente du package</th>
             <!-- <th>Benefice sur package</th> -->
@@ -168,9 +168,7 @@
             <td>{{ item.libelle }}</td>
             <!-- <td>{{ moneyFormat.format(item.cout_acquisition) }} Fcfa</td> -->
             <td>
-              {{
-                moneyFormat.format(item.cout_acquisition * item.nb_achetes)
-              }}
+              {{ moneyFormat.format(item.cout_acquisition * item.nb_achetes) }}
               Fcfa
             </td>
             <td>
@@ -355,7 +353,7 @@ td {
   border: thin solid rgba(141, 140, 140, 0.692) !important;
 }
 .bg-pen {
-  background: rgb(231, 202, 15) !important;
+  background: rgb(231, 202, 15);
   border: 1px solid black !important;
 }
 .my_footer {
@@ -391,14 +389,17 @@ td {
 .badge {
   font-size: 1em !important;
 }
-input,select{ 
+input,
+select {
   border: 1px solid black !important;
 }
-.form-group{ 
+.form-group {
   text-align: left !important;
 }
-label{
+label {
   font-weight: bold !important;
 }
-
+a:active {
+  background-color: gray !important;
+}
 </style>

@@ -27,7 +27,7 @@
             <thead >
               <tr>
                 <th class="bg-light">Nom du package</th>
-                 <th class="bg-light">Quantité</th>
+                 <th class="bg-light">Quantité d'article(s) lié(s) au package</th>
               </tr>
             </thead>
             <tbody>

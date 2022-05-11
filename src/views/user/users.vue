@@ -124,7 +124,6 @@
                 class="form-control"
                 placeholder="ex:17373HDD73HSHS"
                 v-model="registre"
-                 required
               />
             </div>
           </div>
@@ -218,7 +217,7 @@ export default {
               this.$router.push("/listusers")
            },1500)
           }
-          if (reponse.data.status == "false") {
+          if(reponse.data.status == "false") {
             Swal.fire({
               text: "Veuillez remplir tous les champs",
               icon: "error",

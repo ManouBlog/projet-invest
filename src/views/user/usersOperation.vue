@@ -138,8 +138,9 @@
                 <th class="bg-light">#</th>
                 <th class="bg-light">Type de l'opération</th>
                 <th class="bg-light">Le montant</th>
-                <th class="bg-light">L'operateur</th>
+               
                 <th class="bg-light">Date de l'operation</th>
+                 <th class="bg-light">L'operateur</th>
               </tr>
             </thead>
             <tbody>

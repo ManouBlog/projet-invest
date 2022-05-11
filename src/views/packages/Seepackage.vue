@@ -396,10 +396,7 @@ button:active {
 .w-25 {
   width: 50px !important;
 }
-input,
-select {
-  border: 1px solid black !important;
-}
+
 .form-group {
   text-align: left !important;
 }

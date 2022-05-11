@@ -761,9 +761,10 @@ export default {
         (this.userCompte.email = this.user.email),
         (this.userCompte.lieu_habitation = this.user.lieu_habitation),
         (this.userCompte.password = this.userCompte.pass);
+        
       axios
-        .put(lien + "/api/profile/" + this.user.id, this.userCompte, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        .put(lien + "/api/profile",this.userCompte, {
+          headers: { Authorization: "Bearer " + this.$store.state.token },
         })
         .then((reponse) => {
           console.log(reponse);
@@ -781,6 +782,13 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          Swal.fire({
+              text: "Echec",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+            });
         });
     },
     getRole(){
@@ -796,7 +804,7 @@ export default {
     userAD(){
       if(this.$store.state.token !== null){
         this.user = this.$store.state.user
-        this.admissiblite = this.user.tab[0]
+        this.admissiblite = this.$store.state.user.tab[0]
       }
       if(this.$store.state.token === null){
         this.user = null
@@ -827,6 +835,13 @@ export default {
 <style scoped>
 aside * {
   color: white !important;
+}
+input,
+select {
+  border: 1px solid black !important;
+}
+label{
+  text-align: left !important;
 }
 .dropdown-item {
   color: black !important;

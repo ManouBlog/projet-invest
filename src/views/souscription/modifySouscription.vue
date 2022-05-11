@@ -49,22 +49,22 @@
         </div>
         <div class="col-md-4">
           <div class="form-group">
-            <label class="form-label">Délai d'ecoulement</label>
+            <label class="form-label">Délai d'ecoulement (jours)</label>
             <input
               type="text"
               class="form-control form-control-danger"
-              v-model="detailPackage.nb_jours"
+              :value="`${detailPackage.nb_jours} jours`"
               disabled
             />
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
-            <label class="form-label">Prix d'achat par pièce</label>
+            <label class="form-label">Prix d'achat par pièce (Fcfa)</label>
             <input
               type="text"
               class="form-control form-control-danger"
-              v-model="detailPackage.cout_acquisition"
+              :value="`${moneyFormat.format(detailPackage.cout_acquisition)} Fcfa`"
               disabled
             />
           </div>
@@ -75,7 +75,7 @@
             <input
               type="text"
               class="form-control form-control-danger"
-              v-model="detailPackage.cout_vente"
+              :value="`${moneyFormat.format(detailPackage.cout_vente)} Fcfa`"
               disabled
             />
           </div>
@@ -86,7 +86,7 @@
             <input
               type="text"
               class="form-control form-control-danger"
-              v-model="detailPackage.nb_products"
+              :value="`${detailPackage.nb_products}`"
               disabled
             />
           </div>
@@ -97,7 +97,7 @@
             <input
               type="text"
               class="form-control form-control-danger"
-              v-model="detailPackage.gain_par_piece"
+              :value="`${moneyFormat.format(detailPackage.gain_par_piece)} Fcfa`"
               disabled
             />
           </div>
@@ -141,7 +141,7 @@
     <tr>
     <th>libelle</th>
     <th>Délai d'ecoulement</th>
-    <th>Prix d'achat par pièce</th>
+    <th>Prix d'achat par pièce (Fcfa)</th>
     <th>Prix de vente par pièce</th>
      <th>Nombre de pièces</th>
       <th>Gain par pièces</th>
@@ -167,7 +167,7 @@
     </div>
     <div class="container px-5" v-if="userWhoBuy !== null">
       <div>
-        <h5 class="text-center badge bg-info bg-gradient">Rapport d'achat</h5>
+        <h5 class="text-center badge bg-info bg-gradient">Rapport de vente</h5>
         <!-- <h3 v-if="userWhoBuy !== null">Acheteur : {{userWhoBuy.nom}} {{userWhoBuy.prenoms}}</h3> -->
       </div>
       <table class="table" v-if="rapportAchat !== null">
@@ -232,7 +232,7 @@ export default {
       this.detailPackage = this.package.package;
       this.userWhoBuy = this.package.user;
       this.rapportAchat = this.package.rapport;
-       this.prixAchat = `${this.moneyFormat.format(
+      this.prixAchat = `${this.moneyFormat.format(
         this.detailPackage.nb_products * this.detailPackage.cout_vente
       )} Fcfa`;
       this.prixTotal = `${this.moneyFormat.format(
@@ -282,13 +282,14 @@ td {
 .badge {
   font-size: 1.3em !important;
 }
-input,select{ 
+input,
+select {
   border: 1px solid black !important;
 }
-.form-group{ 
+.form-group {
   text-align: left !important;
 }
-label{
+label {
   font-weight: bold !important;
 }
 </style>

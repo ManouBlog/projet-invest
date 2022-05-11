@@ -30,14 +30,14 @@
             <thead>
               <tr>
                 <th class="bg-light">#</th>
-                 <th class="bg-light">Nom du fournisseur</th>
+                <th class="bg-light">Nom du fournisseur</th>
                 <th class="bg-light">Nom de l'article</th>
                 <th class="bg-light">Nombre de piéces</th>
-                <th class="bg-light">Prix d'achat par pièce</th>
-                <th class="bg-light">Prix de vente par pièces</th>
+                <th class="bg-light">Prix d'achat par pièce (Fcfa)</th>
+                <th class="bg-light">Prix de vente par pièce (Fcfa)</th>
                 <th class="bg-light">Gain par piéces</th>
                 <th class="bg-light">Package</th>
-                <th class="bg-light">Délai d'ecoulement</th>
+                <th class="bg-light">Délai d'ecoulement (jours)</th>
                 <th class="bg-light">Date de création</th>
                 <th class="bg-light">Status</th>
                 <th class="bg-light text-right">Détails</th>
@@ -72,11 +72,23 @@
                   {{ new Date(item.created_at).toLocaleDateString("fr") }}
                 </td>
                 <td>
-                  <span v-if="item.etat == 'en cours de traitement'" class="badge bg-info bg-gradient">En cours de traitement</span>
-                  <span v-if="item.etat == 'publie'" class="badge bg-success bg-gradient">Publié</span>
-                  <span v-if="item.etat == 'rejete'" class="badge bg-danger bg-gradient"> Rejeter</span>
+                  <span
+                    v-if="item.etat == 'en cours de traitement'"
+                    class="badge bg-info bg-gradient"
+                    >En cours de traitement</span
+                  >
+                  <span
+                    v-if="item.etat == 'publie'"
+                    class="badge bg-success bg-gradient"
+                    >Publié</span
+                  >
+                  <span
+                    v-if="item.etat == 'rejete'"
+                    class="badge bg-danger bg-gradient"
+                  >
+                    Rejeter</span
+                  >
                 </td>
-  
 
                 <td class="text-right">
                   <div
@@ -305,10 +317,11 @@ td {
   place-items: center;
   justify-content: center;
 }
-input,select{ 
+input,
+select {
   border: 1px solid black !important;
 }
-.form-group{ 
+.form-group {
   text-align: left !important;
 }
 </style>

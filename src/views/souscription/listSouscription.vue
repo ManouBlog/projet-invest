@@ -30,8 +30,8 @@
               <tr>
                 <th class="bg-light">#</th>
                 <th class="bg-light">Nom de l'article</th>
-                
-                <!-- <th class="bg-light">Prix d'achat par pièce</th>
+
+                <!-- <th class="bg-light">Prix d'achat par pièce (Fcfa)</th>
                 <th class="bg-light">Prix de vente par pièce</th>
                 <th class="bg-light">Gain par pièces</th> -->
                 <!-- <th class="bg-light">Nombre de pièces</th> -->
@@ -74,11 +74,15 @@
                 <td v-if="item.user">
                   {{ item.user.nom }} {{ item.user.prenoms }}
                 </td>
-                 <td>
+                <td>
                   {{ item.nb_pieces }}
                 </td>
-                <td v-if="item.package"     >
-                  {{`${moneyFormat.format(item.nb_pieces * item.package.cout_acquisition)} Fcfa`}}
+                <td v-if="item.package">
+                  {{
+                    `${moneyFormat.format(
+                      item.nb_pieces * item.package.cout_acquisition
+                    )} Fcfa`
+                  }}
                 </td>
                 <td>
                   {{ new Date(item.created_at).toLocaleDateString("fr") }}

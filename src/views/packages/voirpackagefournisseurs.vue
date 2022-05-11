@@ -22,64 +22,63 @@
     </div>
 
     <div class="row container-fluid">
-    <div class="row">
-     <div class="col-md-4">
-            <div class="form-group">
-              <label class="form-label">Nom</label>
-              <input
-                type="text"
-                class="form-control form-control-danger"
-                v-model="user.nom"
-                disabled
-              />
-            </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Nom</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="user.nom"
+              disabled
+            />
           </div>
-           <div class="col-md-4">
-            <div class="form-group">
-              <label class="form-label">prenoms</label>
-              <input
-                type="text"
-                class="form-control form-control-danger"
-                v-model="user.prenoms"
-                disabled
-              />
-            </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">prenoms</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="user.prenoms"
+              disabled
+            />
           </div>
-           <div class="col-md-4">
-            <div class="form-group">
-              <label class="form-label">email</label>
-              <input
-                type="text"
-                class="form-control form-control-danger"
-                v-model="user.email"
-                disabled
-              />
-            </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">email</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="user.email"
+              disabled
+            />
           </div>
-           <div class="col-md-4">
-            <div class="form-group">
-              <label class="form-label">Télephone</label>
-              <input
-                type="text"
-                class="form-control form-control-danger"
-                v-model="user.phone"
-                disabled
-              />
-            </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Télephone</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="user.phone"
+              disabled
+            />
           </div>
-            <div class="col-md-4">
-            <div class="form-group">
-              <label class="form-label">Solde</label>
-              <input
-                type="text"
-                class="form-control form-control-danger"
-               v-model="currency"
-                disabled
-              />
-            </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-label">Solde</label>
+            <input
+              type="text"
+              class="form-control form-control-danger"
+              v-model="currency"
+              disabled
+            />
           </div>
-    
-    </div>
+        </div>
+      </div>
       <!-- <div class="float">
         <span class="fw-bold">Nom:</span>
         <input type="text" v-model="user.nom" disabled /><br />
@@ -105,10 +104,10 @@
               <tr>
                 <th class="bg-light">#</th>
                 <th class="bg-light">Nom de l'article</th>
-                <th class="bg-light">Prix d'achat par pièce</th>
-                <th class="bg-light">Prix de vente par pièces</th>
+                <th class="bg-light">Prix d'achat par pièce (Fcfa)</th>
+                <th class="bg-light">Prix de vente par pièces (Fcfa)</th>
                 <th class="bg-light">Gain par pièce</th>
-                <th class="bg-light">Délai d'ecoulement</th>
+                <th class="bg-light">Délai d'ecoulement (jours)</th>
                 <th class="bg-light">Nombre de pièces</th>
                 <th class="bg-light">Etat</th>
                 <th class="bg-light text-right">Date d'enregistrement</th>
@@ -152,7 +151,7 @@
 
                 <td class="text-right">
                   <div
-                    class="dropdown dropdown-action d-flex justify-content-center flex-wrap"
+                    class="dropdown dropdown-action d-flex justify-content-center align-self-center"
                   >
                     <router-link
                       v-if="item.etat == 'rejete'"
@@ -168,9 +167,17 @@
                     <!-- <router-link title="Modifier l' utilisateur" :to="{name:'AssignerRole',params:{id:item.id}}" class="btn boutons  m-1 bg-pen text-light">
                        <i class="bi bi-pencil-fill"></i>
                     </router-link> -->
-                    <!-- <button @click="show(item.id)" title="Supprimer l' utilisateur" class="btn btn-lg m-1 boutons  bg-danger text-light">
+                    <button
+                      v-if="
+                        item.etat == 'en cours de traitement' ||
+                        item.etat == 'rejete'
+                      "
+                      @click="show(item.id)"
+                      title="Supprimer l' utilisateur"
+                      class="btn btn-lg m-1 boutons bg-danger text-light"
+                    >
                       <i class="bi bi-trash3-fill"></i>
-                    </button> -->
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -181,10 +188,10 @@
     </div>
     <div class="delete_personne" v-show="showMsg">
       <div class="delete">
-        <span class="fw-bold">vous-voulez vraiment supprimer?</span>
+        <span class="fw-bold">vous-voulez vraiment supprimer l'article?</span>
         <button
           class="btn btn-lg bg-pen text-light my-3 border-0 rounded p-2 fw-bold"
-          @click="delete_user"
+          @click="delete_article"
         >
           Supprimer
         </button>
@@ -200,7 +207,7 @@
   <Footer class="my_footer" v-if="this.packages !== null"></Footer>
 </template>
 <script>
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
@@ -226,11 +233,75 @@ export default {
       moneyFormat: new Intl.NumberFormat("de-DE"),
       isLoading: false,
       currency: null,
+      showMsg: false,
+      id_delete: null,
     };
   },
   methods: {
     addPackage() {
       this.$router.push("/package");
+    },
+    show(id) {
+      this.showMsg = !this.showMsg;
+      this.id_delete = id;
+      console.log("ID A DELETE", this.id_delete);
+    },
+    fermer() {
+      this.showMsg = !this.showMsg;
+      this.id_delete = null;
+      console.log("ID A DELETE", this.id_delete);
+    },
+    delete_article() {
+      axios
+        .delete(lien + "/api/packages/" + this.id_delete)
+        .then((reponse) => {
+          console.log(reponse);
+          if (reponse.data.status == "true") {
+            Swal.fire({
+              text: "Article Supprimé",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+            });
+            this.showMsg = false;
+            setTimeout(() => {
+              window.location.reload(true);
+            }, 1500);
+          }
+          if (reponse.data.status == "false") {
+            Swal.fire({
+              text: "Echec",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+            });
+          }
+          // if (
+          //   reponse.data.status !== "false" &&
+          //   reponse.data.status !== "true"
+          // ) {
+          //   Swal.fire({
+          //     text: "les packages du forunisseur sont déja utilisés donc impossible de le supprimer",
+          //     icon: "info",
+          //     showConfirmButton: false,
+          //     timer: 1500,
+          //     timerProgressBar: true,
+          //   });
+          //   this.showMsg = false;
+          // }
+        })
+        .catch((error) => {
+          console.log(error);
+          Swal.fire({
+            text: "Echec",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+          });
+        });
     },
   },
   created() {
@@ -316,13 +387,44 @@ td {
   background: rgb(231, 202, 15) !important;
   border: 1px solid black !important;
 }
-input,select{ 
+input,
+select {
   border: 1px solid black !important;
 }
-.form-group{ 
+.form-group {
   text-align: left !important;
 }
-label{
+label {
   font-weight: bold !important;
+}
+.bg-danger {
+  background: crimson !important;
+  border: 2px solid black !important;
+}
+.boutons {
+  width: 28px !important;
+  height: 28px !important;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+}
+.delete_personne {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.099);
+  top: 0;
+  left: 0;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+}
+.delete {
+  padding: 3em;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.285);
 }
 </style>

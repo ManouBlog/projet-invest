@@ -35,6 +35,9 @@
                 <th class="bg-light" v-if="this.user.tab[0] == 'admin'">
                   Fournisseurs
                 </th>
+                 <th class="bg-light" v-if="this.user.tab[0] == 'admin'">
+                  Détails
+                </th>
                 <!-- <th class="bg-light" v-if="this.user.tab[0] == 'admin'">
                   Souscripteurs
                 </th> -->
@@ -69,19 +72,19 @@
                     <b>-{{ item.nom }} {{ item.prenoms }}</b>
                   </span>
                 </td> -->
-                <!-- <td class="text-right">
+                <td class="text-right">
                   <div class="dropdown dropdown-action d-flex justify-content-center flex-wrap">
                     <router-link  :to="{name:'detailsVentes',params:{id:item.id}}" data-title="détail vente"  class="btn m-1 boutons bg-pen text-light">
                        <i class="bi bi-eye"></i>
                     </router-link>
                   </div>
-                </td> -->
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-
+<!-- 
       <div v-if="this.user.tab[0] == 'admin'" class="mt-5">
       <h2>listes des souscripteurs</h2>
       <table class="table">
@@ -100,7 +103,7 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
     </div>
     
   </div>

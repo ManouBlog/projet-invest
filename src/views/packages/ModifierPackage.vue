@@ -35,12 +35,12 @@
           <div class="row pt-3">
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-label">Prix d'achat par pièce</label>
+                <label class="form-label">Prix d'achat par pièce (Fcfa)</label>
                 <input
                   type="text"
                   class="form-control"
                   placeholder="ex:12000 fcfa"
-                  v-model="libelle.cout_acquisition"
+                  :value="`${moneyFormat.format(libelle.cout_acquisition)} Fcfa`"
                   pattern="^([0-9]*)$"
                   disabled
                 />
@@ -49,13 +49,15 @@
             <!--/span-->
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-label">Prix de vente par pièces</label>
+                <label class="form-label"
+                  >Prix de vente par pièces (Fcfa)</label
+                >
                 <input
                   type="text"
                   pattern="^([0-9]*)$"
                   class="form-control form-control-danger"
                   placeholder="ex:3000 fcfa"
-                  v-model="libelle.cout_vente"
+                  :value="`${moneyFormat.format(libelle.cout_vente)} Fcfa`"
                   disabled
                 />
               </div>
@@ -67,11 +69,11 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-label">Délai d'ecoulement</label>
+                <label class="form-label">Délai d'ecoulement (jours)</label>
                 <input
                   type="text"
                   class="form-control"
-                  v-model="libelle.nb_jours"
+                  :value="`${libelle.nb_jours} jours`"
                   pattern="^([0-9]*)$"
                   required
                   disabled
@@ -190,6 +192,7 @@ export default {
       userman_id: null,
       showComment: false,
       comment: null,
+      moneyFormat: new Intl.NumberFormat("de-DE"),
     };
   },
   components: {

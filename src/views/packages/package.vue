@@ -50,12 +50,13 @@
                   type="text"
                   class="form-control"
                   v-model="libelle"
-                  pattern="[a-z]*"
+                  pattern="[a-z_ ]*"
                   required
                 />
-                <span class="small text-danger" v-if="this.libelle == null">le nom doit être en miniscule*</span>
+                <span class="small text-danger" v-if="this.libelle == null"
+                  >le nom doit être en miniscule*</span
+                >
               </div>
-              
             </div>
 
             <!--/span-->
@@ -69,7 +70,7 @@
                   type="text"
                   class="form-control"
                   placeholder="ex:1200 fcfa"
-                  v-model="cout_acquisition"
+                  v-model.number="cout_acquisition"
                   pattern="^([0-9]*)$"
                   required
                 />
@@ -84,7 +85,7 @@
                   type="text"
                   class="form-control form-control-danger"
                   placeholder="ex:3000 fcfa"
-                  v-model="cout_vente"
+                  v-model.number="cout_vente"
                   pattern="^([0-9]*)$"
                   required
                 />
@@ -98,7 +99,7 @@
                   type="text"
                   class="form-control"
                   placeholder="ex:200"
-                  v-model="nb_products"
+                  v-model.number="nb_products"
                   pattern="^([0-9]*)$"
                   required
                 />
@@ -106,7 +107,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="form-label">délai d écoulement</label>
+                <label class="form-label">délai d'écoulement</label>
                 <input
                   type="text"
                   class="form-control"
@@ -121,10 +122,7 @@
         </div>
         <div class="form-actions">
           <div class="card-body">
-            <button
-              class="btn text-white mx-3 btn-envoyer"
-              type="submit"
-            >
+            <button class="btn text-white mx-3 btn-envoyer" type="submit">
               envoyer
             </button>
             <button @click="$router.go(-1)" type="button" class="btn btn-dark">
@@ -171,11 +169,11 @@ export default {
     Footer,
   },
   methods: {
-    create_article(){
-      let prixVente= this.cout_vente
-      let prixAchat = this.cout_acquisition
-        
-   if(prixVente < prixAchat || prixVente == prixAchat){
+    create_article() {
+      let prixVente = this.cout_vente;
+      let prixAchat = this.cout_acquisition;
+
+      if (prixVente < prixAchat || prixVente == prixAchat) {
         Swal.fire({
           text: "Le prix de vente doit etre supérieur au prix d'achat",
           icon: "info",
@@ -183,48 +181,47 @@ export default {
           timer: 1500,
           timerProgressBar: true,
         });
-      }else{
-        this.created_package()
+      } else {
+        this.created_package();
       }
     },
     created_package() {
-      
-        let valueTypeId = document.getElementById("type").value;
-        let value_name = document.querySelector(".types");
-        for (let i = 0; i < value_name.length; i++) {
-          let element = value_name[i];
-          if (element.value == valueTypeId) {
-            this.libelleName = element.textContent;
-          }
+      let valueTypeId = document.getElementById("type").value;
+      let value_name = document.querySelector(".types");
+      for (let i = 0; i < value_name.length; i++) {
+        let element = value_name[i];
+        if (element.value == valueTypeId) {
+          this.libelleName = element.textContent;
         }
-        axios
-          .post(lien + "/api/packages", {
-            cout_acquisition: this.cout_acquisition,
-            cout_vente: this.cout_vente,
-            libelle: this.libelle,
-            nb_products: this.nb_products,
-            nb_jours: this.nb_jours,
-            user_id: this.user.id,
-            type_id: valueTypeId,
-          })
-          .then((reponse) => {
-            console.log("created_package", reponse.data.status);
-            if (reponse.data.status === "true") {
-              Swal.fire({
-                text: "Package crée avec success",
-                icon: "success",
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true,
-              });
-              setTimeout(() => {
-                this.$router.push("/voirMesPackage");
-              }, 1500);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      }
+      axios
+        .post(lien + "/api/packages", {
+          cout_acquisition: this.cout_acquisition,
+          cout_vente: this.cout_vente,
+          libelle: this.libelle,
+          nb_products: this.nb_products,
+          nb_jours: this.nb_jours,
+          user_id: this.user.id,
+          type_id: valueTypeId,
+        })
+        .then((reponse) => {
+          console.log("created_package", reponse.data.status);
+          if (reponse.data.status === "true") {
+            Swal.fire({
+              text: "Package crée avec success",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+            });
+            setTimeout(() => {
+              this.$router.push("/voirMesPackage");
+            }, 1500);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     get_Package() {
       axios
@@ -269,10 +266,12 @@ select {
 .form-group {
   text-align: left !important;
 }
-input:invalid,select:invalid{
-  border:1px solid red !important;
+input:invalid,
+select:invalid {
+  border: 1px solid red !important;
 }
-input:valid,select:valid{
-  border:1px solid rgb(74, 164, 0) !important;
+input:valid,
+select:valid {
+  border: 1px solid rgb(74, 164, 0) !important;
 }
 </style>
